@@ -1,0 +1,70 @@
+/*
+  * 定义覆盖ElementUI官方样式的基础主题样式
+  * 主题皮肤：skin-blue
+  * 主题型別：預設主题皮肤
+*/
+
+// 设计稿/elementui基础主题色
+$--color-primary: #0080FF;
+$--color-success: #13ce66;
+$--color-warning: #ffba00;
+$--color-danger: #ff4949;
+$--border-color-light: #dfe4ed;
+$--border-color-lighter: #e6ebf5;
+$--button-font-weight: 400;
+$--table-border: 1px solid #dfe6ec;
+
+// 平台颜色
+$--C01: #C2E1FF;
+$--C02: #00182e;
+$--C03: #e6e7eb;
+$--C04: rgba(14, 127, 240, 0.04);
+$--C05: rgba(12, 127, 242, 0.4);
+
+
+$--font-path: '~element-ui/lib/theme-chalk/fonts'; // icon font path, 必需
+@import '~element-ui/packages/theme-chalk/src/index'; //  Element UI 的官方样式库
+
+/*
+  * designToken，定义公共主题样式
+  * {}里的变量，只有在它控制域内才会生效
+  * 可以配置多个主题色,預設#app里的样式;
+  * 如需切换主题样式，可以在头部<div id="app">添加对应的主题class名稱;
+  * 比如<div id="app" * class="app-theme__dark">;
+*/
+
+// 主题色: 預設主题色，skin_default
+#global-theme {
+  --colorPrimary: #{$--color-primary}; // 主要颜色
+  --colorDanger: #{$--color-danger};
+  --colorHomeBtn: #{$--color-primary}; // 门户首頁按钮样式
+  --colorHomeSwiperBtn: #{$--color-primary}; // 门户首頁轮播按钮样式
+  --colorHomeBorder: #{$--C01}; // 门户首頁边框样式
+  --navBarBgColor: #{$--color-primary}; // 顶部和侧边選單栏背景色
+  --navBarSideBgColor: #{$--color-primary}; // 顶部和侧边選單栏背景色
+  --footBgColor: #{$--C02}; // 页脚背景色
+  --borderColor: #{$--C03}; // 边框颜色
+  --inputBgColor: #{$--C04}; // 输入框背景颜色
+  --chartAreaColor: #{$--C05}; // echarts面积柱状图颜色
+  --mimdelPrimary:#5781ff;//過渡色
+  --littlePrimary:rgba(12, 127, 242, 0.2);
+  --serarchIconColor: #1780fd;
+  --colorBorderHome: #b5daff;
+  --colorBgHome: #f5faff;
+  --colorLinearBgHome: #e8f4ff;
+  --colorTextHome: #2A4359;
+  --colorHoverBgHome:  #d6ecff;
+  --colorTagHome: rgba(0,127,255, 0.1);
+  --themeHueRotate: hue-rotate(0deg);
+}
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  theme: $--color-primary;
+  colorDanger: $--color-danger;
+  colorPrimary: $--color-primary;
+  chartAreaColor: $--C05; // echarts面积柱状图颜色
+  colorFillBg:#195FFE;
+  colorFillRgbaBg:rgba(25, 95, 254, 0.5);
+}

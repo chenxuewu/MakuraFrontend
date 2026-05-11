@@ -1,0 +1,23 @@
+// base-drawer-footer 内部样式
+.base-drawer-footer {
+  flex: none;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e6e7eb;
+  box-shadow: 0 0 10px -2px rgba(0, 0, 0, 0.1);
+  z-index: 9;
+  ::v-deep {
+    .el-button {
+      min-width: 72px;
+    }
+    .el-button--text {
+      padding-left: 10px;
+      padding-right: 10px;
+
+      &:hover {
+        background-color: #e6f2ff;
+      }
+    }
+  }
+}
