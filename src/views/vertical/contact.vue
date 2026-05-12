@@ -1,89 +1,14 @@
 <template>
   <div class="vertical-page">
 
-
     <VerticalHead />
-
-
-    <div class="modal fade cart-shit" id="exampleModal-cart" tabindex="-1" aria-hidden="true">
-      <div class="cart-shit-wrap">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close-btn" data-bs-dismiss="modal">
-                <i class="ri-close-fill"></i>
-              </button>
-            </div>
-            <div class="modal-body">
-              <ul class="cart-list">
-                <li>
-                  <img src="/test/static/picture/product-1.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-2.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Power Tools Set Chinese Manufacturer Production 50V Lithu Battery
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-3.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Electrical Magnetic Impact Power Hammer Drills Machine
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-4.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Professional Cordless Drill Power Tools Set Competitive Price
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-              </ul>
-              <ul class="payable">
-                <li>
-                  應付總額
-                </li>
-                <li class="total">
-                  <span>$564.00</span>
-                </li>
-              </ul>
-              <ul class="cart-check-btn">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    查看購物車
-                  </router-link>
-                </li>
-                <li class="checkout">
-                  <router-link to="/vertical/checkout" class="default-btn">
-                    結帳
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
     <div class="page-title-area">
       <div class="container">
         <div class="page-title-content">
           <ul>
             <li>
-              <router-link to="/vertical/index">
-                首頁
-              </router-link>
+              <router-link to="/vertical/index">首頁</router-link>
             </li>
             <li class="active">聯絡我們</li>
           </ul>
@@ -91,123 +16,192 @@
       </div>
     </div>
 
-
     <section class="contact-area ptb-54">
       <div class="container">
         <div class="row">
           <div class="col-lg-4">
             <div class="contact-info-europe">
               <h3>聯絡資訊</h3>
+
               <ul>
                 <li class="p-0">
-                  <h4>歐洲辦公室</h4>
-                </li>
-                <li>
-                  <i class="ri-map-pin-line"></i>
-                  2491 Reel Avenue Albuquerque, NM
+                  <h4>客服中心 ‧ 全台免付費專線</h4>
                 </li>
                 <li>
                   <i class="ri-phone-line"></i>
-                  <a href="tel:+1-(514)-321-4566">+1 (514) 321-4566</a>
-                  <a href="tel:+1-(514)-321-4567">+1 (514) 321-4567</a>
+                  <a href="tel:0800588168">0800-588-168（市話免付費）</a>
+                </li>
+                <li>
+                  <i class="ri-customer-service-2-line"></i>
+                  LINE 官方帳號：<a href="https://line.me/R/ti/p/@makura" target="_blank" rel="noopener">@makura</a>
                 </li>
                 <li>
                   <i class="ri-mail-send-line"></i>
-                  <a href="javascript:;"><span class="__cf_email__" data-cfemail="bdd8d5dcc4fdd8c5dcd0cdd1d893ded2d0">[email&#160;protected]</span></a>
+                  <a href="mailto:service@makura.com.tw">service@makura.com.tw</a>
                 </li>
                 <li>
                   <i class="ri-time-line"></i>
-                  週一至週六 8:00 AM - 8:00 PM
+                  週一至週日 09:00–22:00（全年無休）
                 </li>
               </ul>
+
+              <a class="line-cta" href="https://line.me/R/ti/p/@makura" target="_blank" rel="noopener">
+                <i class="ri-line-fill"></i>加入 LINE 好友．享首購 95 折
+              </a>
+
               <ul>
                 <li class="p-0">
-                  <h4>亞洲辦公室</h4>
+                  <h4>北部總部</h4>
                 </li>
                 <li>
                   <i class="ri-map-pin-line"></i>
-                  2491 Reel Avenue Albuquerque, NM
+                  新北市三重區重新路五段 168 號 8 樓
                 </li>
                 <li>
                   <i class="ri-phone-line"></i>
-                  <a href="tel:+1-(514)-321-4566">+1 (514) 321-4566</a>
-                  <a href="tel:+1-(514)-321-4567">+1 (514) 321-4567</a>
+                  <a href="tel:0229998888">(02) 2999-8888</a>
                 </li>
                 <li>
                   <i class="ri-mail-send-line"></i>
-                  <a href="javascript:;"><span class="__cf_email__" data-cfemail="690c010810290c11080419050c470a0604">[email&#160;protected]</span></a>
+                  <a href="mailto:sales@makura.com.tw">sales@makura.com.tw</a>
                 </li>
                 <li>
                   <i class="ri-time-line"></i>
-                  週一至週六 8:00 AM - 8:00 PM
+                  週一至週五 09:00–18:00
+                </li>
+              </ul>
+
+              <ul>
+                <li class="p-0">
+                  <h4>中部營運中心</h4>
+                </li>
+                <li>
+                  <i class="ri-map-pin-line"></i>
+                  台中市潭子區工業路 88 號
+                </li>
+                <li>
+                  <i class="ri-phone-line"></i>
+                  <a href="tel:0425998888">(04) 2599-8888</a>
+                </li>
+                <li>
+                  <i class="ri-mail-send-line"></i>
+                  <a href="mailto:taichung@makura.com.tw">taichung@makura.com.tw</a>
+                </li>
+                <li>
+                  <i class="ri-time-line"></i>
+                  週一至週五 09:00–18:00
                 </li>
               </ul>
             </div>
           </div>
           <div class="col-lg-8">
             <div class="map">
-
+              <iframe
+                src="https://www.google.com/maps?q=新北市三重區重新路五段&output=embed"
+                width="100%"
+                height="100%"
+                style="border:0; min-height: 580px;"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="Makura 北部總部地圖"
+              ></iframe>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-
     <section class="contact-area pb-54">
       <div class="container">
         <div class="contact-form">
-          <h2>留下訊息</h2>
-          <form id="contactForm">
+          <h2>給我們留言</h2>
+          <p class="form-desc">填寫以下表單，客服專員將於 1 個工作天內以 Email 或電話與您聯繫。</p>
+          <form id="contactForm" @submit.prevent="onSubmit">
             <div class="row">
               <div class="col-lg-6 col-sm-6">
                 <div class="form-group">
-                  <label>姓名</label>
-                  <input type="text" name="name" id="name" class="form-control" required="" data-error="請輸入您的姓名">
-                  <div class="help-block with-errors"></div>
+                  <label>姓名 <span class="required">*</span></label>
+                  <input
+                    v-model="form.name"
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder="請輸入您的姓名"
+                    required
+                  >
                 </div>
               </div>
               <div class="col-lg-6 col-sm-6">
                 <div class="form-group">
-                  <label>電子郵件</label>
-                  <input type="email" name="email" id="email" class="form-control" required=""
-                         data-error="請輸入您的電子郵件"
+                  <label>電子郵件 <span class="required">*</span></label>
+                  <input
+                    v-model="form.email"
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    placeholder="example@mail.com"
+                    required
                   >
-                  <div class="help-block with-errors"></div>
                 </div>
               </div>
               <div class="col-lg-6 col-sm-6">
                 <div class="form-group">
-                  <label>電話</label>
-                  <input type="text" name="phone_number" id="phone_number" required="" data-error="請輸入您的電話號碼"
-                         class="form-control"
+                  <label>聯絡電話</label>
+                  <input
+                    v-model="form.phone"
+                    type="tel"
+                    name="phone_number"
+                    class="form-control"
+                    placeholder="例：0912-345-678"
                   >
-                  <div class="help-block with-errors"></div>
                 </div>
               </div>
               <div class="col-lg-6 col-sm-6">
                 <div class="form-group">
-                  <label>主旨</label>
-                  <input type="text" name="msg_subject" id="msg_subject" class="form-control" required=""
-                         data-error="請輸入主旨"
-                  >
-                  <div class="help-block with-errors"></div>
+                  <label>諮詢類型 <span class="required">*</span></label>
+                  <select v-model="form.type" class="form-control" required>
+                    <option value="" disabled>請選擇諮詢類型</option>
+                    <option value="product">商品諮詢</option>
+                    <option value="quote">大量採購／報價</option>
+                    <option value="after-sale">售後服務／維修</option>
+                    <option value="dealer">經銷合作</option>
+                    <option value="other">其他</option>
+                  </select>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
-                  <label>訊息內容</label>
-                  <textarea name="message" class="form-control" id="message" cols="30" rows="6" required=""
-                            data-error="請輸入訊息內容"
+                  <label>主旨 <span class="required">*</span></label>
+                  <input
+                    v-model="form.subject"
+                    type="text"
+                    name="msg_subject"
+                    class="form-control"
+                    placeholder="一句話描述您的需求"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="form-group">
+                  <label>訊息內容 <span class="required">*</span></label>
+                  <textarea
+                    v-model="form.message"
+                    name="message"
+                    class="form-control"
+                    cols="30"
+                    rows="6"
+                    placeholder="請詳述您的需求，例如商品型號、數量或問題描述，方便我們為您提供最合適的服務。"
+                    required
                   ></textarea>
-                  <div class="help-block with-errors"></div>
                 </div>
               </div>
               <div class="col-lg-12 col-md-12">
                 <div class="form-group checkboxs">
-                  <input type="checkbox" class="chb2">
+                  <input id="agreeTerms" v-model="form.agreed" type="checkbox" class="chb2">
                   <p>
-                    接受
+                    我已閱讀並同意
                     <router-link to="/vertical/terms-conditions">服務條款</router-link>
                     及
                     <router-link to="/vertical/privacy-policy">隱私權政策</router-link>
@@ -216,9 +210,8 @@
               </div>
               <div class="col-lg-12 col-md-12">
                 <button type="submit" class="default-btn">
-                  <span>發送訊息</span>
+                  <span>送出訊息</span>
                 </button>
-                <div id="msgSubmit" class="h3 text-center hidden"></div>
                 <div class="clearfix"></div>
               </div>
             </div>
@@ -227,9 +220,7 @@
       </div>
     </section>
 
-
     <VerticalSubscribe />
-
 
     <VerticalFoot />
 
@@ -242,12 +233,41 @@ import VerticalFoot from './components/foot.vue'
 import VerticalSubscribe from './components/subscribe.vue'
 import verticalMixin from '@/mixins/vertical'
 
+const emptyForm = () => ({
+  name: '',
+  email: '',
+  phone: '',
+  type: '',
+  subject: '',
+  message: '',
+  agreed: false
+})
+
 export default {
   name: 'Contact',
   components: { VerticalHead, VerticalFoot, VerticalSubscribe },
   mixins: [verticalMixin],
   metaInfo: {
-    title: 'Ehay - Tools Store HTML Template'
+    title: 'Makura | 聯絡我們'
+  },
+  data() {
+    return {
+      form: emptyForm()
+    }
+  },
+  methods: {
+    onSubmit() {
+      if (!this.form.agreed) {
+        if (this.$message && this.$message.warning) {
+          this.$message.warning('請先勾選同意服務條款與隱私權政策')
+        }
+        return
+      }
+      if (this.$message && this.$message.success) {
+        this.$message.success('已收到您的訊息！客服將於 1 個工作天內回覆，感謝您聯繫 Makura。')
+      }
+      this.form = emptyForm()
+    }
   }
 }
 </script>
@@ -265,7 +285,6 @@ export default {
 </style>
 
 <style scoped>
-/* 确保样式在 Vue 组件中正确应用 */
 .vertical-page {
   width: 100%;
 }
@@ -289,5 +308,59 @@ export default {
 
 .vertical-page :deep([class*="col-"]) {
   padding: 0 12px;
+}
+
+/* LINE 加好友按鈕 */
+.vertical-page :deep(.line-cta) {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 24px;
+  padding: 10px 18px;
+  background: #06c755;
+  color: #fff !important;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.vertical-page :deep(.line-cta:hover) {
+  opacity: 0.88;
+}
+.vertical-page :deep(.line-cta i) {
+  font-size: 18px;
+}
+
+/* 表單描述文字 */
+.vertical-page :deep(.contact-form .form-desc) {
+  margin: -10px 0 24px;
+  color: #777;
+  font-size: 14px;
+}
+
+/* 必填星號 */
+.vertical-page :deep(.contact-form .required) {
+  color: #e23e3e;
+  margin-left: 2px;
+}
+
+/* select 樣式對齊 form-control */
+.vertical-page :deep(.contact-form select.form-control) {
+  height: 48px;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* 地圖嵌入容器 */
+.vertical-page :deep(.map) {
+  width: 100%;
+  height: 100%;
+  min-height: 580px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.vertical-page :deep(.map iframe) {
+  display: block;
 }
 </style>

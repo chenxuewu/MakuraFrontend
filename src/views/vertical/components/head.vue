@@ -21,7 +21,7 @@
                 <li>
                   <router-link to="/vertical/order-tracking">訂單追蹤</router-link>
                 </li>
-                <li>需要協助？請撥：<a href="tel:+1-(514)-321-4567"><span>+1 (514) 321-4567</span></a></li>
+                <li>客服專線：<a href="tel:0800588168"><span>0800-588-168</span></a>（免付費）</li>
               </ul>
             </div>
             <div class="col-lg-4">
@@ -33,8 +33,8 @@
                   <li>
                     <div class="usd">
                       <select>
-                        <option value="1">USD</option>
-                        <option value="2">EURO</option>
+                        <option value="TWD">TWD 新台幣</option>
+                        <option value="USD">USD 美金</option>
                       </select>
                     </div>
                   </li>
@@ -46,10 +46,8 @@
                         <span class="lang-name">繁體中文</span>
                       </button>
                       <div class="dropdown-menu language-dropdown-menu" aria-labelledby="language2">
-                        <a class="dropdown-item" href="#"><img src="/test/static/picture/english.png" alt="Image">English</a>
-                        <a class="dropdown-item" href="#"><img src="/test/static/picture/deutsch.png" alt="Image">Deutsch</a>
-                        <a class="dropdown-item" href="#"><img src="/test/static/picture/china.png" alt="Image">简体中文</a>
-                        <a class="dropdown-item" href="#"><img src="/test/static/picture/arbic.png" alt="Image">العربيّة</a>
+                        <a class="dropdown-item" href="#"><img src="/test/static/picture/english.png" alt="English">English</a>
+                        <a class="dropdown-item" href="#"><img src="/test/static/picture/china.png" alt="简体中文">简体中文</a>
                       </div>
                     </div>
                   </li>
@@ -65,12 +63,12 @@
           <div class="row align-items-center">
             <div class="col-lg-3">
               <div class="logo">
-                <a href=""><img src="/test/static/picture/logo.png" alt="Image"></a>
+                <router-link to="/vertical/index"><img src="/test/static/picture/logo.png" alt="Makura"></router-link>
               </div>
             </div>
             <div class="col-lg-5">
               <form class="search-box">
-                <input type="text" name="Search" placeholder="搜尋商品..." class="form-control">
+                <input type="text" name="Search" placeholder="搜尋商品、品牌或型號..." class="form-control">
                 <button type="submit" class="search-btn"><i class="ri-search-line"></i>搜尋</button>
               </form>
             </div>
@@ -85,7 +83,7 @@
                 <li>
 <span class="cart" data-bs-toggle="modal" data-bs-target="#exampleModal-cart">
 <span class="wish-icon"><i class="ri-shopping-cart-line"></i><span class="count">0</span></span>
-<span class="favorite">購物車：</span>$00.00
+<span class="favorite">購物車：</span>NT$0
 </span>
                 </li>
               </ul>
@@ -111,7 +109,7 @@
                 </div>
               </div>
               <div class="logo">
-                <a href=""><img src="/test/static/picture/logo.png" alt="logo"></a>
+                <router-link to="/vertical/index"><img src="/test/static/picture/logo.png" alt="Makura"></router-link>
               </div>
             </div>
           </div>
@@ -276,7 +274,7 @@
                     <router-link to="/vertical/contact" :class="['nav-link', { active: activeNav === 'contact' }]">聯絡我們</router-link>
                   </li>
                 </ul>
-                <div class="others-options"><span>單筆訂單滿 $100 享免運優惠</span></div>
+                <div class="others-options"><span>全館單筆滿 NT$1,000 免運費 ‧ 24 小時快速出貨</span></div>
               </div>
             </nav>
           </div>
@@ -293,29 +291,26 @@
             </div>
             <div class="modal-body">
               <ul class="cart-list">
-                <li><img src="/test/static/picture/product-1.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">DFMALB 20V Max XX Oscillating Multi Tool Variable Speed
-                    Tool
+                <li><img src="/test/static/picture/product-1.jpg" alt="多功能大扭力充電式衝擊扳手">
+                  <router-link to="/vertical/shopping-cart">多功能大扭力充電式衝擊扳手（20V 鋰電）
                   </router-link>
-                  <span>$125.00</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-2.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">Power Tools Set Chinese Manufacturer Production 50V Lithu
-                    Battery
+                  <span>NT$1,890</span><i class="ri-close-fill"></i></li>
+                <li><img src="/test/static/picture/product-2.jpg" alt="充電式電鏈鋸">
+                  <router-link to="/vertical/shopping-cart">充電式電鏈鋸（含 2 顆鋰電池）
                   </router-link>
-                  <span>$125.00</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-3.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">Electrical Magnetic Impact Power Hammer Drills Machine
+                  <span>NT$1,490</span><i class="ri-close-fill"></i></li>
+                <li><img src="/test/static/picture/product-3.jpg" alt="綠光雷射水平儀">
+                  <router-link to="/vertical/shopping-cart">12 線綠光雷射水平儀（防水防摔）
                   </router-link>
-                  <span>$125.00</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-4.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">Professional Cordless Drill Power Tools Set Competitive
-                    Price
+                  <span>NT$1,290</span><i class="ri-close-fill"></i></li>
+                <li><img src="/test/static/picture/product-4.jpg" alt="高轉速角度砂輪機">
+                  <router-link to="/vertical/shopping-cart">4 吋高轉速角度砂輪機
                   </router-link>
-                  <span>$125.00</span><i class="ri-close-fill"></i></li>
+                  <span>NT$970</span><i class="ri-close-fill"></i></li>
               </ul>
               <ul class="payable">
                 <li>應付總額</li>
-                <li class="total"><span>$564.00</span></li>
+                <li class="total"><span>NT$5,640</span></li>
               </ul>
               <ul class="cart-check-btn">
                 <li>
