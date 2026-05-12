@@ -5,7 +5,7 @@
 */
 
 // 设计稿/elementui基础主题色
-$--color-primary: #0080FF;
+$--color-primary: #1A8FA4;
 $--color-success: #13ce66;
 $--color-warning: #ffba00;
 $--color-danger: #ff4949;
@@ -15,11 +15,11 @@ $--button-font-weight: 400;
 $--table-border: 1px solid #dfe6ec;
 
 // 平台颜色
-$--C01: #C2E1FF;
-$--C02: #00182e;
+$--C01: #A8DCE8;
+$--C02: #0B3B47;
 $--C03: #e6e7eb;
-$--C04: rgba(14, 127, 240, 0.04);
-$--C05: rgba(12, 127, 242, 0.4);
+$--C04: rgba(26, 143, 164, 0.06);
+$--C05: rgba(26, 143, 164, 0.4);
 
 
 $--font-path: '~element-ui/lib/theme-chalk/fonts'; // icon font path, 必需
@@ -46,15 +46,15 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts'; // icon font path, 必需
   --borderColor: #{$--C03}; // 边框颜色
   --inputBgColor: #{$--C04}; // 输入框背景颜色
   --chartAreaColor: #{$--C05}; // echarts面积柱状图颜色
-  --mimdelPrimary:#5781ff;//過渡色
-  --littlePrimary:rgba(12, 127, 242, 0.2);
-  --serarchIconColor: #1780fd;
-  --colorBorderHome: #b5daff;
-  --colorBgHome: #f5faff;
-  --colorLinearBgHome: #e8f4ff;
-  --colorTextHome: #2A4359;
-  --colorHoverBgHome:  #d6ecff;
-  --colorTagHome: rgba(0,127,255, 0.1);
+  --mimdelPrimary:#5BBDCE;//過渡色
+  --littlePrimary:rgba(26, 143, 164, 0.2);
+  --serarchIconColor: #1A8FA4;
+  --colorBorderHome: #A8DCE8;
+  --colorBgHome: #EBF7FA;
+  --colorLinearBgHome: #E0F3F7;
+  --colorTextHome: #0B3B47;
+  --colorHoverBgHome:  #C2EBF3;
+  --colorTagHome: rgba(26, 143, 164, 0.1);
   --themeHueRotate: hue-rotate(0deg);
 }
 
@@ -65,6 +65,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts'; // icon font path, 必需
   colorDanger: $--color-danger;
   colorPrimary: $--color-primary;
   chartAreaColor: $--C05; // echarts面积柱状图颜色
-  colorFillBg:#195FFE;
-  colorFillRgbaBg:rgba(25, 95, 254, 0.5);
+  colorFillBg:#1A8FA4;
+  colorFillRgbaBg:rgba(26, 143, 164, 0.5);
 }

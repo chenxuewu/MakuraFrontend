@@ -63,7 +63,7 @@ a {
 
 a:hover {
   text-decoration: none;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 a:focus {
@@ -126,7 +126,7 @@ img {
 
 .form-control {
   height: 55px;
-  color: #ff6a00;
+  color: #00A3B4;
   border: 1px solid #d7d7d7;
   background-color: transparent;
   border-radius: 0;
@@ -157,7 +157,7 @@ img {
   -webkit-box-shadow: unset;
   box-shadow: unset;
   outline: 0;
-  border: 1px solid #ff6a00;
+  border: 1px solid #00A3B4;
 }
 
 .form-control:hover:focus,
@@ -265,7 +265,7 @@ Default Btn Area Style*/
   display: inline-table;
   padding: 16px 30px;
   font-weight: 400;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .default-btn.radius-btn {
@@ -326,7 +326,7 @@ Read More Btn Area Style*/
 }
 
 .read-more:hover {
-  color: #ff6a00;
+  color: #00A3B4;
   letter-spacing: 1px;
 }
 
@@ -340,7 +340,7 @@ Section Title Area Style*/
 
 .section-title span {
   font-size: 16px;
-  color: #ff6a00;
+  color: #00A3B4;
   display: block;
   margin-bottom: 5px;
   font-weight: 700;
@@ -368,7 +368,7 @@ Section Title Area Style*/
 }
 
 .section-title.white-title span {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .section-title.white-title h2 {
@@ -428,18 +428,18 @@ Header Area Style
 }
 
 .top-header .header-left-content li a span {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .top-header .header-left-content li a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .top-header .header-left-content li a i {
   font-size: 16px;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
-  color: #ff6a00;
+  color: #00A3B4;
   text-align: center;
   border-radius: 50%;
   line-height: 1;
@@ -449,7 +449,7 @@ Header Area Style
 }
 
 .top-header .header-left-content li a:hover i {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .top-header .header-left-content li:last-child {
@@ -559,7 +559,7 @@ Header Area Style
   .navbar-option-language
   .dropdown-menu
   .dropdown-item:hover {
-  color: #ff6a00;
+  color: #00A3B4;
   background-color: transparent;
 }
 
@@ -568,7 +568,7 @@ Header Area Style
   .navbar-option-language
   .dropdown-menu
   .dropdown-item:focus {
-  color: #ff6a00;
+  color: #00A3B4;
   background-color: transparent;
 }
 
@@ -611,7 +611,7 @@ Header Area Style
 }
 
 .top-header .header-right-content ul li a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .top-header .header-right-content ul li:last-child {
@@ -646,7 +646,7 @@ Header Area Style
 
 .middle-header .search-box .form-control {
   border-radius: 4px;
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .middle-header .search-box .form-control::-webkit-input-placeholder {
@@ -670,7 +670,7 @@ Header Area Style
   top: 3px;
   right: 2px;
   padding: 0 20px;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
   border-radius: 4px;
   line-height: 1;
@@ -722,7 +722,7 @@ Header Area Style
 .middle-header .wish-cart li .cart .wish-icon i {
   font-size: 26px;
   background-color: #fff1e8;
-  color: #ff6a00;
+  color: #00A3B4;
   width: 50px;
   height: 50px;
   line-height: 50px;
@@ -740,7 +740,7 @@ Header Area Style
   height: 18px;
   line-height: 18px;
   text-align: center;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
   font-size: 12px;
   border-radius: 50%;
@@ -798,7 +798,7 @@ Navbar Area Style
 }
 
 .navbar-area.navbar-area-style-two .desktop-nav {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .navbar-area.navbar-area-style-two
@@ -837,7 +837,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .navbar-area.navbar-area-style-two .desktop-nav .navbar .others-options span {
@@ -846,7 +846,7 @@ Navbar Area Style
 
 .navbar-area.navbar-area-style-two .navbar-category button {
   background-color: #ffffff;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .only-home-one-sticky {
@@ -936,7 +936,7 @@ Navbar Area Style
 .desktop-nav .navbar .navbar-nav .nav-item a:hover,
 .desktop-nav .navbar .navbar-nav .nav-item a:focus,
 .desktop-nav .navbar .navbar-nav .nav-item a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav .navbar .navbar-nav .nav-item a:hover:before,
@@ -965,7 +965,7 @@ Navbar Area Style
 .desktop-nav .navbar .navbar-nav .nav-item:hover a,
 .desktop-nav .navbar .navbar-nav .nav-item:focus a,
 .desktop-nav .navbar .navbar-nav .nav-item.active a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu {
@@ -1013,7 +1013,7 @@ Navbar Area Style
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:hover,
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu li a:focus,
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-menu {
@@ -1065,7 +1065,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1130,7 +1130,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1205,7 +1205,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1290,7 +1290,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1385,7 +1385,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1490,7 +1490,7 @@ Navbar Area Style
   .dropdown-menu
   li
   a.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1510,7 +1510,7 @@ Navbar Area Style
   .dropdown-menu
   li.active
   a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1550,7 +1550,7 @@ Navbar Area Style
   .dropdown-menu
   li.active
   a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1586,7 +1586,7 @@ Navbar Area Style
   .dropdown-menu
   li.active
   a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1618,7 +1618,7 @@ Navbar Area Style
   .dropdown-menu
   li.active
   a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1646,7 +1646,7 @@ Navbar Area Style
   .dropdown-menu
   li.active
   a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1664,7 +1664,7 @@ Navbar Area Style
 }
 
 .desktop-nav .navbar .navbar-nav .nav-item .dropdown-menu li.active a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .desktop-nav
@@ -1748,7 +1748,7 @@ Navbar Area Style
   left: 0;
   width: 50px;
   height: 1px;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .desktop-nav
@@ -1802,7 +1802,7 @@ Navbar Area Style
 }
 
 .navbar-category button {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   width: 320px;
   padding: 21px 25px;
   color: #ffffff;
@@ -1923,7 +1923,7 @@ Cart Shit Area Style
 }
 
 .cart-shit .close-btn:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .cart-shit .modal-header {
@@ -1973,7 +1973,7 @@ Cart Shit Area Style
 }
 
 .cart-shit .cart-list li i:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .cart-shit .cart-list li:last-child {
@@ -1996,7 +1996,7 @@ Cart Shit Area Style
 
 .cart-shit .cart-list li span {
   display: block;
-  color: #ff6a00;
+  color: #00A3B4;
   margin-top: 8px;
 }
 
@@ -2110,19 +2110,19 @@ Hero Area Style
 }
 
 .hero-slider-area .owl-dots .owl-dot:hover span {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .hero-slider-area .owl-dots .owl-dot:hover span::before {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .hero-slider-area .owl-dots .owl-dot.active span {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .hero-slider-area .owl-dots .owl-dot.active span::before {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .hero-slider-area.hero-slider-area-style-two .hero-slider-content {
@@ -2194,7 +2194,7 @@ Hero Area Style
 }
 
 .hero-slider-area.hero-slider-area-style-three .offer-tools h3.ff6a00 {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .hero-slider-area.hero-slider-area-style-three .offer-tools .read-more {
@@ -2204,7 +2204,7 @@ Hero Area Style
 }
 
 .hero-slider-area.hero-slider-area-style-three .offer-tools .read-more:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .hero-slider {
@@ -2338,7 +2338,7 @@ Services Area Style
 }
 
 .single-services:hover {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 /*
@@ -2381,8 +2381,8 @@ Products Area Style
 .best-seller-area .owl-nav .owl-prev:hover,
 .best-seller-area .owl-nav .owl-next:hover {
   background-color: transparent;
-  background-color: #ff6a00;
-  border-color: #ff6a00 !important;
+  background-color: #00A3B4;
+  border-color: #00A3B4 !important;
 }
 
 .best-seller-area .owl-nav .owl-prev:hover i,
@@ -2420,7 +2420,7 @@ Products Area Style
 }
 
 .single-products.deals-products:hover {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .single-products.deals-products:hover .product-img img {
@@ -2596,7 +2596,7 @@ Products Area Style
 }
 
 .single-products .product-img .hot.new {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   height: 30px;
   width: 45px;
   top: 2px;
@@ -2629,7 +2629,7 @@ Products Area Style
 }
 
 .single-products .product-content .title:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .single-products .product-content .products-rating {
@@ -2643,7 +2643,7 @@ Products Area Style
 }
 
 .single-products .product-content .products-rating li i {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .single-products .product-content .products-rating li a {
@@ -2662,7 +2662,7 @@ Products Area Style
 
 .single-products .product-content .products-price li {
   display: inline-block;
-  color: #ff6a00;
+  color: #00A3B4;
   font-size: 15px;
   font-weight: 500;
 }
@@ -2712,7 +2712,7 @@ Products Area Style
   .products-cart-wish-view
   li
   .default-btn::after {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .single-products
@@ -2720,8 +2720,8 @@ Products Area Style
   .products-cart-wish-view
   li
   .default-btn:hover {
-  border-color: #ff6a00;
-  background-color: #ff6a00;
+  border-color: #00A3B4;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -2739,8 +2739,8 @@ Products Area Style
 }
 
 .single-products .product-content .products-cart-wish-view li .wish-btn:hover {
-  border-color: #ff6a00;
-  background-color: #ff6a00;
+  border-color: #00A3B4;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -2763,13 +2763,13 @@ Products Area Style
 }
 
 .single-products .product-content .products-cart-wish-view li .eye-btn:hover {
-  border-color: #ff6a00;
-  background-color: #ff6a00;
+  border-color: #00A3B4;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
 .single-products:hover {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 /*
@@ -2844,7 +2844,7 @@ Product View One Style
 .product-view-one .modal-content .product-content .price .new-price {
   display: inline-block;
   font-size: 18px;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-view-one .modal-content .product-content .price .new-price del {
@@ -2872,7 +2872,7 @@ Product View One Style
 }
 
 .product-view-one .modal-content .product-content .product-review .rating i {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-view-one
@@ -2892,7 +2892,7 @@ Product View One Style
   .product-content
   .product-review
   .rating-count:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-view-one .modal-content .product-content .product-info {
@@ -3138,7 +3138,7 @@ Product View One Style
   .product-add-to-cart
   .input-counter
   .minus-btn:hover {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -3159,7 +3159,7 @@ Product View One Style
   .product-add-to-cart
   .input-counter
   .plus-btn:hover {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -3247,7 +3247,7 @@ Product View One Style
   .product-content
   .wishlist-btn
   .default-btn::after {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .product-view-one
@@ -3255,7 +3255,7 @@ Product View One Style
   .product-content
   .wishlist-btn
   .default-btn:hover {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -3319,7 +3319,7 @@ Product View One Style
   li
   a:hover
   i {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -3335,7 +3335,7 @@ Product View One Style
 }
 
 .product-view-one .owl-item.active.current {
-  background-color: #ff6a00 !important;
+  background-color: #00A3B4 !important;
   padding: 2px;
 }
 
@@ -3358,7 +3358,7 @@ Product View One Style
 }
 
 .product-view-one .owl-next i {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
   width: 30px;
   height: 30px;
@@ -3384,7 +3384,7 @@ Product View One Style
 }
 
 .product-view-one .owl-prev i {
-  background-color: #ff6a00 !important;
+  background-color: #00A3B4 !important;
   color: #ffffff;
   width: 30px;
   height: 30px;
@@ -3442,7 +3442,7 @@ Sale Offer Bg Style
 }
 
 .sale-offer-bg h5 span {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .sale-offer-bg h3 {
@@ -3490,8 +3490,8 @@ Featured Products Style
 .featured-products-area .owl-nav .owl-prev:hover,
 .featured-products-area .owl-nav .owl-next:hover {
   background-color: transparent;
-  background-color: #ff6a00;
-  border-color: #ff6a00 !important;
+  background-color: #00A3B4;
+  border-color: #00A3B4 !important;
 }
 
 .featured-products-area .owl-nav .owl-prev:hover i,
@@ -3635,7 +3635,7 @@ Featured Products Style
 }
 
 .featured-product-img .featured-product-content a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -3678,8 +3678,8 @@ Flash Style
 .flash-deals-area .owl-nav .owl-prev:hover,
 .flash-deals-area .owl-nav .owl-next:hover {
   background-color: transparent;
-  background-color: #ff6a00;
-  border-color: #ff6a00 !important;
+  background-color: #00A3B4;
+  border-color: #00A3B4 !important;
 }
 
 .flash-deals-area .owl-nav .owl-prev:hover i,
@@ -3733,7 +3733,7 @@ Flash Style
 }
 
 .flash-deals-img .flash-deals-content a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .flash-deals-wrap {
@@ -3743,7 +3743,7 @@ Flash Style
 }
 
 .flash-deals-wrap.need-border {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .flash-deals-wrap.need-border
@@ -3761,7 +3761,7 @@ Flash Style
   .product-content
   #timerss
   div {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
@@ -3800,7 +3800,7 @@ Trending Products Style
 }
 
 .trending-product-list .single-list .hot.new {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .trending-product-list .single-list:last-child {
@@ -3824,7 +3824,7 @@ Trending Products Style
 }
 
 .trending-product-list .single-list .product-content .title:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .trending-product-list .single-list .product-content .products-price {
@@ -3836,7 +3836,7 @@ Trending Products Style
 
 .trending-product-list .single-list .product-content .products-price li {
   display: inline-block;
-  color: #ff6a00;
+  color: #00A3B4;
   font-size: 15px;
   font-weight: 500;
 }
@@ -3858,7 +3858,7 @@ Trending Products Style
 }
 
 .trending-product-list .single-list .product-content .products-rating li i {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .trending-product-list .single-list .product-content .products-rating li a {
@@ -3978,11 +3978,11 @@ Categories Style
 }
 
 .single-categories:hover {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .single-categories:hover h3 a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -4053,7 +4053,7 @@ Blog Area Style
 
 .single-blog .blog-content .default-btn::before,
 .single-blog .blog-content .default-btn::after {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .single-blog .blog-content .default-btn:hover {
@@ -4066,7 +4066,7 @@ Blog Area Style
 }
 
 .single-blog:hover .blog-content h3 a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -4087,7 +4087,7 @@ Partner Area Style
 }
 
 .partner-area .partner-title p span {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .partner-wrap {
@@ -4112,7 +4112,7 @@ Partner Area Style
 Subscribe Area Style
 ======================================================*/
 .subscribe-area {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .newsletter-form {
@@ -4147,7 +4147,7 @@ Subscribe Area Style
 }
 
 .newsletter-form .submit-btn {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
   position: absolute;
   top: 3px;
@@ -4212,14 +4212,14 @@ Footer Area Style
 }
 
 .single-footer-widget .info-list li i {
-  color: #ff6a00;
+  color: #00A3B4;
   position: absolute;
   top: 0;
   left: 0;
 }
 
 .single-footer-widget .info-list li a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .single-footer-widget .social-link {
@@ -4289,11 +4289,11 @@ Copy Right Area Style
 }
 
 .copy-right-area p a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .copy-right-area p a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -4322,11 +4322,11 @@ Customer Area Style
 }
 
 .flash-deals-area .owl-theme .owl-dots .owl-dot span:hover {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .flash-deals-area .owl-theme .owl-dots .owl-dot span.active {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .flash-deals-area .owl-theme:hover .owl-dots {
@@ -4429,11 +4429,11 @@ Categories Area Style
 }
 
 .categories-wrap .tabs li.current {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .categories-wrap .tabs li:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .categories-wrap .owl-nav {
@@ -4474,8 +4474,8 @@ Categories Area Style
 .categories-wrap .owl-nav .owl-prev:hover,
 .categories-wrap .owl-nav .owl-next:hover {
   background-color: transparent;
-  background-color: #ff6a00;
-  border-color: #ff6a00 !important;
+  background-color: #00A3B4;
+  border-color: #00A3B4 !important;
 }
 
 .categories-wrap .owl-nav .owl-prev:hover i,
@@ -4531,7 +4531,7 @@ Popular Categories Area Style
 }
 
 .single-popular-categories:hover {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .single-popular-categories:hover span {
@@ -4581,7 +4581,7 @@ Page Title Area Style
 }
 
 .page-title-area .page-title-content ul li.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .page-title-area .page-title-content ul li:first-child {
@@ -4669,7 +4669,7 @@ Cart Area Style
 }
 
 .cart-area .cart-table table tbody tr td a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .cart-area .cart-table table tbody tr td.product-quantity {
@@ -4793,7 +4793,7 @@ Cart Area Style
   .minus-btn:hover
   i {
   color: #ffffff;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .cart-area
@@ -4849,7 +4849,7 @@ Cart Area Style
   .plus-btn:hover
   i {
   color: #ffffff;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .cart-area .coupon-cart {
@@ -4866,7 +4866,7 @@ Cart Area Style
 }
 
 .cart-area .coupon-cart .form-group .form-control:focus {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .cart-area .coupon-cart .form-group .default-btn {
@@ -5081,11 +5081,11 @@ Checkout Area Style
 }
 
 .checkout-area .faq-accordion .accordion .accordion-title.active::after {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .checkout-area .faq-accordion .accordion .accordion-title.active::before {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .checkout-area .faq-accordion .accordion .accordion-title::before {
@@ -5113,7 +5113,7 @@ Checkout Area Style
 }
 
 .checkout-area .faq-accordion .accordion .accordion-title:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .checkout-area .faq-accordion .accordion .accordion-item {
@@ -5134,11 +5134,11 @@ Checkout Area Style
 }
 
 .checkout-area .faq-accordion .form-check label a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .checkout-area .faq-accordion .form-check label a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .checkout-area .faq-accordion .default-btn {
@@ -5156,7 +5156,7 @@ Checkout Area Style
 }
 
 .checkout-area .log-in-coupon-code p a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -5286,7 +5286,7 @@ Order Tracking Style
 }
 
 .order-tracking form p a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -5387,7 +5387,7 @@ User Area CSS
 }
 
 .user-area .user-form-content .create a {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .user-area .user-form-content.log-in-width {
@@ -5460,11 +5460,11 @@ Dashboard Area CSS
 }
 
 .dashboard-navigation li:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .dashboard-navigation li.active {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .profile-bar {
@@ -5545,13 +5545,13 @@ Dashboard Area CSS
 
 .billing-address-bar .edit-address .default-btn {
   background-color: transparent;
-  border: 1px solid #ff6a00;
+  border: 1px solid #00A3B4;
   color: #111111;
 }
 
 .billing-address-bar .edit-address .default-btn::before,
 .billing-address-bar .edit-address .default-btn::after {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .billing-address-bar .edit-address .default-btn:hover {
@@ -5618,7 +5618,7 @@ Dashboard Area CSS
 .submit-property-form .file-upload .inputfile:focus + label,
 .submit-property-form .file-upload .inputfile + label:hover {
   background-color: transparent;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .submit-property-form .file-upload .inputfile + label {
@@ -5640,7 +5640,7 @@ Dashboard Area CSS
 }
 
 .order-details-area .cart-totals .default-btn {
-  border: 1px solid #ff6a00;
+  border: 1px solid #00A3B4;
   background-color: #ffffff;
   color: #111111;
   padding: 12px 20px;
@@ -5750,7 +5750,7 @@ Dashboard Area CSS
 .address-list .added-address a i {
   font-size: 30px;
   line-height: 1;
-  border: 1px solid #ff6a00;
+  border: 1px solid #00A3B4;
   width: 40px;
   height: 40px;
   line-height: 40px;
@@ -5803,7 +5803,7 @@ Sidebar Widget Style
   color: #ffffff;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .sidebar-widget.search .search-form .search-button:hover {
@@ -5843,11 +5843,11 @@ Sidebar Widget Style
 }
 
 .sidebar-widget.categories ul li a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .sidebar-widget.categories ul li a:hover i {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .sidebar-widget.categories ul li span {
@@ -5897,7 +5897,7 @@ Sidebar Widget Style
 }
 
 .sidebar-widget.recent-post ul li a:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .sidebar-widget.recent-post ul li a img {
@@ -5936,9 +5936,9 @@ Sidebar Widget Style
 .sidebar-widget.tags ul li a:hover {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
-  border-color: #ff6a00;
+  border-color: #00A3B4;
 }
 
 .sidebar-widget.tags ul li:last-child {
@@ -6040,7 +6040,7 @@ Sidebar Widget Style
 }
 
 .sidebar-widget.brand ul li:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .sidebar-widget.brand ul li span {
@@ -6245,7 +6245,7 @@ Blog Details Content Style
 }
 
 .blog-details-content .blog-top-content .blog-content .admin li i {
-  color: #ff6a00;
+  color: #00A3B4;
   display: inline-block;
   margin-right: 5px;
   position: relative;
@@ -6287,7 +6287,7 @@ Blog Details Content Style
 
 .blog-details-content .blog-top-content blockquote i {
   font-size: 60px;
-  color: #ff6a00;
+  color: #00A3B4;
   position: absolute;
   top: 40px;
   left: 0;
@@ -6337,8 +6337,8 @@ Blog Details Content Style
 }
 
 .blog-details-content .tags .tag-link li a:hover {
-  color: #ff6a00;
-  border: 1px solid #ff6a00;
+  color: #00A3B4;
+  border: 1px solid #00A3B4;
 }
 
 .blog-details-content .share-link {
@@ -6510,7 +6510,7 @@ Blog Details Content Style
   position: absolute;
   top: 0;
   left: 0;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .map iframe {
@@ -6604,11 +6604,11 @@ Product Details Area Style
 }
 
 .product-details-area .products-details-tab .tabs li:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-details-area .products-details-tab .tabs li.current {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-details-area .products-details-tab .tabs li:last-child {
@@ -6902,7 +6902,7 @@ Product Details Area Style
   .review-comments
   .review-item
   .review-report-link:hover {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .product-details-area
@@ -7240,7 +7240,7 @@ Showing Area Style
   right: 0;
   width: 0;
   height: 100%;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   border-radius: 4px;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
@@ -7248,7 +7248,7 @@ Showing Area Style
 }
 
 .global-location-area .single-location a {
-  color: #ff6a00;
+  color: #00A3B4;
   padding: 25px;
   display: block;
 }
@@ -7334,7 +7334,7 @@ FAQ Area Style
   font-size: 20px;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .faq-accordion .accordion .accordion-title.active i {
@@ -7400,14 +7400,14 @@ FAQ Area Style
   right: 0;
   width: 0;
   height: 1px;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
   z-index: -1;
 }
 
 .faq-tab .tabs li.current {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .faq-tab .tabs li.current::before {
@@ -7475,7 +7475,7 @@ Terms & Conditions And Privacy Policy Style
   position: absolute;
   top: -6px;
   left: 0;
-  color: #ff6a00;
+  color: #00A3B4;
   font-size: 25px;
 }
 
@@ -7488,7 +7488,7 @@ Terms & Conditions And Privacy Policy Style
 }
 
 .main-content-text ol li::marker {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .main-content-text ol li:last-child {
@@ -7496,7 +7496,7 @@ Terms & Conditions And Privacy Policy Style
 }
 
 .main-content-text a {
-  color: #ff6a00;
+  color: #00A3B4;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
 }
@@ -7525,7 +7525,7 @@ Terms & Conditions And Privacy Policy Style
   font-size: 300px;
   line-height: 1;
   font-weight: 700;
-  color: #ff6a00;
+  color: #00A3B4;
   margin-top: -48px;
 }
 
@@ -7553,7 +7553,7 @@ Terms & Conditions And Privacy Policy Style
 .error-area .error-content p {
   margin: 20px 0 20px;
   font-size: 19px;
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 /*
@@ -7595,8 +7595,8 @@ Coming Soon Area Style
 }
 
 .coming-soon-area .coming-soon-content #timer div {
-  background-color: #ff6a00;
-  border: 4px solid #ff6a00;
+  background-color: #00A3B4;
+  border: 4px solid #00A3B4;
   color: #ffffff;
   width: 100px;
   height: 105px;
@@ -7658,7 +7658,7 @@ Coming Soon Area Style
   height: 2px;
   -webkit-transition: all ease 0.5s;
   transition: all ease 0.5s;
-  background: #ff6a00;
+  background: #00A3B4;
 }
 
 .coming-soon-area .coming-soon-content form .form-group .input-newsletter {
@@ -7721,7 +7721,7 @@ Coming Soon Area Style
   form
   .form-group
   .input-newsletter:focus {
-  border-color: #ff6a00;
+  border-color: #00A3B4;
   outline: 0 !important;
 }
 
@@ -8017,7 +8017,7 @@ Preloader Area Style*/
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #ff6a00;
+  background: #00A3B4;
   -webkit-animation: rotate-five 12s infinite alternate;
   animation: rotate-five 12s infinite alternate;
 }
@@ -8025,7 +8025,7 @@ Preloader Area Style*/
 .preloader .content .box {
   height: 50%;
   width: 50%;
-  background: #ff6a00;
+  background: #00A3B4;
   position: relative;
   z-index: 10;
   -webkit-animation: 12s rotate-five infinite alternate;
@@ -8065,7 +8065,7 @@ Go Top Style*/
   cursor: pointer;
   right: 3%;
   top: 87%;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   z-index: 4;
   width: 40px;
   text-align: center;
@@ -8106,7 +8106,7 @@ Go Top Style*/
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   opacity: 0;
   visibility: hidden;
   -webkit-transition: 0.5s;
@@ -8115,7 +8115,7 @@ Go Top Style*/
 
 .go-top:hover {
   color: #ffffff;
-  background-color: #ff6a00;
+  background-color: #00A3B4;
 }
 
 .go-top:hover::before {
@@ -8176,7 +8176,7 @@ Video wave Style*/
   line-height: 80px;
   text-align: center;
   border-radius: 0;
-  color: #ff6a00;
+  color: #00A3B4;
   position: relative;
   top: 3px;
   z-index: 1;
@@ -8281,12 +8281,12 @@ Nice select Area Style*/
 }
 
 .nice-select .option:hover {
-  background-color: #ff6a00;
+  background-color: #00A3B4;
   color: #ffffff;
 }
 
 .nice-select .option.selected.focus {
-  color: #ff6a00;
+  color: #00A3B4;
 }
 
 .nice-select .current {
@@ -8314,8 +8314,8 @@ Page-navigation Area Style*/
 
 .pagination-area .page-numbers:hover {
   color: #ffffff;
-  border-color: #ff6a00;
-  background-color: #ff6a00;
+  border-color: #00A3B4;
+  background-color: #00A3B4;
 }
 
 .pagination-area .page-numbers i {
@@ -8328,8 +8328,8 @@ Page-navigation Area Style*/
 
 .pagination-area .page-numbers.current {
   color: #ffffff;
-  border-color: #ff6a00;
-  background-color: #ff6a00;
+  border-color: #00A3B4;
+  background-color: #00A3B4;
 }
 
 /*

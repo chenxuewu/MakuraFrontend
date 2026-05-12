@@ -6,7 +6,7 @@ const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 const state = {
   title: '',
   // theme: storageSetting.theme || '#409EFF',
-  theme: storageSetting.theme || '#ff6a00',
+  theme: storageSetting.theme || '#1A8FA4',
   sideTheme: storageSetting.sideTheme || sideTheme,
   showSettings: showSettings,
   topNav: storageSetting.topNav === undefined ? topNav : storageSetting.topNav,
