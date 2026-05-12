@@ -780,8 +780,8 @@ Navbar Area Style
 }
 
 .navbar-area.navbar-area-style-two .navbar-category button {
-  background-color: #ffffff;
-  color: #1A8FA4;
+  background-color: transparent;
+  color: #ffffff;
 }
 
 .only-home-one-sticky {
@@ -1189,10 +1189,11 @@ Navbar Area Style
 
 .navbar-category button {
   background-color: #1A8FA4;
-  width: 320px;
-  padding: 21px 25px;
+  width: auto;
+  padding: 21px 22px;
   color: #ffffff;
   text-align: left;
+  white-space: nowrap;
 }
 
 .navbar-category button i {
@@ -1211,12 +1212,13 @@ Navbar Area Style
   position: absolute;
   top: 100%;
   left: 0;
-  width: 320px;
+  width: 200px;
   max-height: 495px;
   overflow: auto;
-  -webkit-box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   background-color: #ffffff;
+  border-top: 2px solid #1A8FA4;
 }
 
 .navbar-category-dropdown.dropdown-menu {

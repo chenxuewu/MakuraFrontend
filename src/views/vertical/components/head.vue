@@ -124,19 +124,18 @@
                    @mouseleave="onCategoryLeave"
               >
                 <button type="button"><i class="ri-menu-line"></i>所有分類<i class="arrow-down ri-arrow-down-s-line"></i></button>
-                <div v-show="categoryVisible" class="navbar-category-dropdown">
-                  <ul>
-                    <li v-for="cat in categories" :key="cat.id">
-                      <router-link :to="{ path: '/vertical/products', query: { categoryId: cat.id } }">{{ cat.displayName }}</router-link>
-                    </li>
-                  </ul>
-                </div>
+                <transition name="cat-drop">
+                  <div v-show="categoryVisible" class="navbar-category-dropdown">
+                    <ul>
+                      <li v-for="cat in categories" :key="cat.id">
+                        <router-link :to="{ path: '/vertical/products', query: { categoryId: cat.id } }">{{ cat.displayName }}</router-link>
+                      </li>
+                    </ul>
+                  </div>
+                </transition>
               </div>
               <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                 <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <router-link to="/vertical/index" :class="['nav-link', { active: activeNav === 'home' }]">首頁</router-link>
-                  </li>
                   <li class="nav-item mega-menu">
                     <a href="#" :class="['nav-link', { active: activeNav === 'shop' }]">商店<i class="ri-arrow-down-s-line"></i></a>
                     <ul class="dropdown-menu">
@@ -518,5 +517,16 @@ export default {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: all !important;
+}
+
+/* 分類下拉展開動畫 */
+.cat-drop-enter-active,
+.cat-drop-leave-active {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.cat-drop-enter,
+.cat-drop-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>
