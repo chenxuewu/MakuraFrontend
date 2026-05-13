@@ -640,6 +640,7 @@ import ProductCard from '@c/ProductCard'
 import { getHomeSections } from '@/api/product/homeSection'
 import { frontGetCategoryTree } from '@/api/product/category'
 import { frontListNoLogin } from '@/api/product/purchase'
+import { OWL_CONFIGS } from '@/mixins/vertical'
 
 // 只針對「資料驅動」的 3 個輪播配置（與 mixins/vertical.js 中 OWL_CONFIGS 對應的 3 條保持一致）
 const DYNAMIC_CAROUSELS = {
@@ -668,6 +669,9 @@ export default {
     this.loadHomeSections()
     this.loadCategories()
   },
+  mounted() {
+    this.initStaticCarousels()
+  },
   methods: {
     async loadHomeSections() {
       try {
@@ -679,7 +683,10 @@ export default {
         this.homeSections = []
       }
       // 商品資料填入 DOM 後，只對 3 個資料驅動的輪播 destroy + re-init，不動 Hero / Partner / Customer / Categories
-      this.$nextTick(() => this.refreshDynamicCarousels())
+      // 用 rAF 等一幀，確保 DOM 完成 layout（特別是 SPA 返回時），避免 owl-carousel 基於 0 尺寸 init 導致圖片塌陷
+      this.$nextTick(() => {
+        requestAnimationFrame(() => this.refreshDynamicCarousels())
+      })
     },
     sectionProducts(id) {
       const s = this.homeSections.find(x => String(x.id) === String(id))
@@ -756,6 +763,32 @@ export default {
           $el.owlCarousel(cfg)
         } catch (e) {
           console.warn('輪播重建失敗', sel, e)
+        }
+      })
+    },
+    initStaticCarousels(retry = 0) {
+      if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
+        if (retry < 100) setTimeout(() => this.initStaticCarousels(retry + 1), 100)
+        return
+      }
+      const $ = jQuery
+      // 只初始化 index.vue 中存在的靜態輪播
+      const staticSelectores = {
+        '.partner-slider': OWL_CONFIGS['.partner-slider'],
+        '.customer-slider': OWL_CONFIGS['.customer-slider'],
+        // .flash-deals-slider 由 refreshDynamicCarousels 在商品載入後統一處理，避免 DOM 空時就被初始化
+      }
+      Object.entries(staticSelectores).forEach(([sel, cfg]) => {
+        const $el = $(sel)
+        if (!$el.length) return
+        try {
+          if ($el.data('owl.carousel')) {
+            $el.trigger('destroy.owl.carousel').removeClass('owl-loaded')
+          }
+          if (!$el.hasClass('owl-carousel')) $el.addClass('owl-carousel')
+          $el.owlCarousel(cfg)
+        } catch (e) {
+          console.warn('靜態輪播初始化失敗', sel, e)
         }
       })
     }
@@ -877,23 +910,31 @@ export default {
 }
 
 /* Flash Deals 卡片（限時搶購：左圖右訊息 + 倒計時） */
-.tw-flash-img {
+.product-img.tw-flash-img {
   position: relative;
-  aspect-ratio: 1 / 1;
+  width: 100%;
+  padding-top: 100%;
   background: #f7f7f7;
   border-radius: 8px;
   overflow: hidden;
 }
-.tw-flash-img a {
+.product-img.tw-flash-img > a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: block;
-  width: 100%;
-  height: 100%;
 }
-.tw-flash-img img {
+/* 用 .product-img.tw-flash-img 雙類選擇器把特異性提到 0,3,1，壓過 style.css 中
+   .single-products .product-img img 的 z-index:-1 / position:relative，避免圖片被父背景蓋住 */
+.product-img.tw-flash-img img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  position: relative;
   z-index: 1;
 }
 .tw-flash-img .badge-corner {
