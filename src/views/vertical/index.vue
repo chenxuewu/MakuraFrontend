@@ -461,8 +461,8 @@
               <h2>熱門商品</h2>
             </div>
             <div class="tw-list-wrap">
-              <ProductCard v-for="product in sectionProducts(2)" :key="product.id" :product="product" variant="list" fallback-img="/test/static/picture/product-34.jpg" />
-              <div v-if="!sectionProducts(2).length" class="empty-products text-center py-4 text-muted">暫無商品</div>
+              <ProductCard v-for="product in sectionProductsByTitle('熱門商品')" :key="product.id" :product="product" variant="list" fallback-img="/test/static/picture/product-34.jpg" />
+              <div v-if="!sectionProductsByTitle('熱門商品').length" class="empty-products text-center py-4 text-muted">暫無商品</div>
             </div>
           </div>
           <div class="col-lg-4 col-md-6">
@@ -573,6 +573,10 @@ export default {
     },
     sectionProducts(id) {
       const s = this.homeSections.find(x => String(x.id) === String(id))
+      return (s && s.products) || []
+    },
+    sectionProductsByTitle(title) {
+      const s = this.homeSections.find(x => x.title === title)
       return (s && s.products) || []
     },
     async loadCategories() {

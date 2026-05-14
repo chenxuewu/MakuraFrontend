@@ -40,7 +40,9 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
+        },
+        proxyTimeout: 600000,
+        timeout: 600000
       }
     },
     disableHostCheck: true

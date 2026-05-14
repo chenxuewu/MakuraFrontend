@@ -124,6 +124,67 @@
           </el-form-item>
         </el-col>
 
+        <!-- 商品短視頻 -->
+        <el-col :span="24" class="el-cols-24">
+          <el-form-item label="商品短視頻">
+            <div class="el-form-item-box">
+              <!-- 已上傳視頻預覽 -->
+              <div v-if="ruleForm.videoFile" class="pv-preview-wrap">
+                <video
+                  :src="ruleForm.videoFile.url"
+                  controls
+                  class="pv-player"
+                  preload="metadata"
+                ></video>
+                <div class="pv-meta">
+                  <span class="pv-filename">{{ ruleForm.videoFile.fileName }}</span>
+                  <el-tag v-if="ruleForm.videoFile.duration" size="mini" type="info">
+                    {{ ruleForm.videoFile.duration }} 秒
+                  </el-tag>
+                </div>
+                <div class="pv-actions">
+                  <el-upload
+                    :http-request="doVideoUpload"
+                    :show-file-list="false"
+                    :before-upload="beforeVideoUpload"
+                    accept=".mp4"
+                    style="display:inline-block"
+                  >
+                    <el-button size="mini" type="primary" :loading="videoUploading">更換視頻</el-button>
+                  </el-upload>
+                  <el-button size="mini" type="danger" @click="removeVideo" style="margin-left:8px">刪除視頻</el-button>
+                </div>
+              </div>
+              <!-- 未上傳 -->
+              <div v-else>
+                <el-upload
+                  :http-request="doVideoUpload"
+                  :show-file-list="false"
+                  :before-upload="beforeVideoUpload"
+                  :disabled="!id || videoUploading"
+                  accept=".mp4"
+                  class="pv-upload-area"
+                  drag
+                >
+                  <div v-if="!id" class="pv-no-id-hint">
+                    <i class="el-icon-info"></i>
+                    <span>請先儲存商品後再上傳短視頻</span>
+                  </div>
+                  <div v-else-if="videoUploading" class="pv-uploading-hint">
+                    <i class="el-icon-loading"></i>
+                    <span>上傳中，請稍候…</span>
+                  </div>
+                  <div v-else class="pv-upload-hint">
+                    <i class="el-icon-video-camera"></i>
+                    <p>點擊或拖拽上傳短視頻</p>
+                    <span>僅支援 mp4 格式，時長不超過 60 秒</span>
+                  </div>
+                </el-upload>
+              </div>
+            </div>
+          </el-form-item>
+        </el-col>
+
         <!-- 商品描述-->
         <el-col :span="24" class="el-cols-24">
           <el-form-item label="商品描述" prop="descriptionImages">
@@ -745,6 +806,7 @@ import {
   addProduct,
   getBackProduct,
   updateProduct,
+  uploadProductVideo,
 } from "@/api/product/product";
 export default {
   name: "ProductInfo",
@@ -868,6 +930,7 @@ export default {
       userType: null,
       displayFileListProduct: [],
       tableKey: 0, // 重新整理表格
+      videoUploading: false,
       ruleForm: {
         id: null, // 商品id
         brandId: "", // 品牌id
@@ -889,6 +952,7 @@ export default {
         mainImages: [], // 商品主圖列表
         descriptionImages: [], // 商品描述圖片列表
         xtProductFiles: [], // 商品相關檔案，圖片或影片
+        videoFile: null, // 商品短視頻（fileType=1）
         skuList: [], // sku列表
         attributes: [], // 屬性列表,
         specifications: [], // 規格列表
@@ -1049,12 +1113,22 @@ export default {
             }
           );
 
-          // 封裝商品圖片,把主圖和詳情圖合併
-
+          // 封裝商品圖片，把主圖和詳情圖合併；如有短視頻一併放入由後端統一入庫
           this.ruleForm.xtProductFiles = [
             ...this.ruleForm.mainImages,
             ...this.ruleForm.descriptionImages,
           ];
+          if (this.ruleForm.videoFile) {
+            const v = this.ruleForm.videoFile;
+            this.ruleForm.xtProductFiles.push({
+              id: v.id || null,
+              fileId: v.fileId,
+              fileType: 1,
+              isMainImage: 0,
+              sortOrder: 0,
+              duration: v.duration,
+            });
+          }
 
           this.ruleForm.xtProductSkus = this.ruleForm.skuList.map((item) => {
             let skuObj = {
@@ -2079,10 +2153,23 @@ export default {
             }))
         );
 
-        // 設定描述圖片 (按照 sortOrder 排序)
+        // 設定短視頻（後端商品詳情接口已單獨返回 videoInfo 欄位）
+        const rawVideo = response.data.videoInfo;
+        this.ruleForm.videoFile = rawVideo
+          ? {
+              id: rawVideo.id,
+              fileId: rawVideo.fileId,
+              url: rawVideo.fileUrl,
+              fileName: rawVideo.fileName,
+              duration: rawVideo.duration,
+              fileType: 1,
+            }
+          : null;
+
+        // 設定描述圖片（fileType=1 且無 duration 為舊描述圖）
         this.ruleForm.descriptionImages = this.sortImagesByOrder(
           response.data.xtProductFileVos
-            .filter((file) => file.fileType == 1)
+            .filter((file) => file.fileType == 1 && (file.duration == null || file.duration === undefined))
             .map((file, index) => ({
               id: file.id,
               fileId: file.fileId,
@@ -2232,6 +2319,49 @@ export default {
     // 排序圖片陣列
     sortImagesByOrder(images) {
       return [...images].sort((a, b) => a.sortOrder - b.sortOrder);
+    },
+
+    // ===== 短視頻相關 =====
+    beforeVideoUpload(file) {
+      const ok = file.type === 'video/mp4' || file.name.toLowerCase().endsWith('.mp4');
+      if (!ok) {
+        this.$message.error('僅支援上傳 mp4 格式視頻');
+        return false;
+      }
+      return true;
+    },
+    async doVideoUpload({ file }) {
+      this.videoUploading = true;
+      try {
+        const res = await uploadProductVideo(file);
+        if (res && res.code === 200 && res.data) {
+          // 上傳接口只把文件寫入 sys_file，不創建 xt_product_file 關聯
+          // 這裡儲存的視頻信息會在保存商品時隨 xtProductFiles 一起入庫
+          this.ruleForm.videoFile = {
+            id: null,
+            fileId: res.data.fileId,
+            url: res.data.fileUrl,
+            fileName: res.data.fileName,
+            duration: res.data.duration,
+            fileType: 1,
+          };
+          this.$message.success('視頻上傳成功');
+        } else {
+          this.$message.error((res && res.msg) || '上傳失敗');
+        }
+      } catch (e) {
+        this.$message.error('上傳失敗，請稍後再試');
+      } finally {
+        this.videoUploading = false;
+      }
+    },
+    removeVideo() {
+      this.$confirm('確定要刪除此短視頻嗎？', '提示', { type: 'warning' })
+        .then(() => {
+          this.ruleForm.videoFile = null;
+          this.$message.success('已刪除短視頻');
+        })
+        .catch(() => {});
     },
 
     // 在 submitForm 方法中，提交前新增以下程式碼
@@ -2506,6 +2636,63 @@ export default {
     transform: rotate(360deg);
   }
 }
+
+// ===== 短視頻上傳區域 =====
+.pv-upload-area {
+  width: 100%;
+  max-width: 480px;
+}
+.pv-upload-area :deep(.el-upload) { width: 100%; }
+.pv-upload-area :deep(.el-upload-dragger) {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pv-upload-hint,
+.pv-no-id-hint,
+.pv-uploading-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #999;
+  font-size: 13px;
+  i { font-size: 32px; margin-bottom: 4px; }
+  p { margin: 0; font-size: 14px; color: #555; }
+  span { font-size: 12px; color: #aaa; }
+}
+.pv-no-id-hint { color: #e6a23c; i { color: #e6a23c; } }
+.pv-uploading-hint { color: #409eff; i { color: #409eff; font-size: 28px; } }
+
+.pv-preview-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 480px;
+}
+.pv-player {
+  width: 100%;
+  max-height: 270px;
+  border-radius: 8px;
+  background: #000;
+  display: block;
+}
+.pv-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+.pv-filename {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pv-actions { display: flex; align-items: center; }
 
 // 縮圖列表
 .thumbnail-list {

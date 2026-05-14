@@ -51,6 +51,20 @@ export function getBackProduct(id) {
   })
 }
 
+// 上傳商品短視頻（mp4，≤60秒）
+// 返回 { fileId, fileUrl, fileName, duration, fileType: 1, isMainImage: 0, sortOrder: 0 }
+// 前端拿到後填入商品表單的 xtProductFiles 陣列，由保存商品接口統一入庫，不需要 productId
+// 注意：不要手動設定 Content-Type，否則 boundary 會缺失，後端無法解析 multipart 請求體
+export function uploadProductVideo(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request({
+    url: '/product/productFile/uploadVideo',
+    method: 'post',
+    data: formData
+  })
+}
+
 // 新增商品資訊
 export function addProduct(data) {
   return request({

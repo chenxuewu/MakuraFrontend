@@ -1,806 +1,476 @@
 <template>
   <div class="vertical-page">
 
-
     <VerticalHead />
 
-
-    <div class="modal fade cart-shit" id="exampleModal-cart" tabindex="-1" aria-hidden="true">
-      <div class="cart-shit-wrap">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close-btn" data-bs-dismiss="modal">
-                <i class="ri-close-fill"></i>
-              </button>
-            </div>
-            <div class="modal-body">
-              <ul class="cart-list">
-                <li>
-                  <img src="/test/static/picture/product-1.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-2.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Power Tools Set Chinese Manufacturer Production 50V Lithu Battery
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-3.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Electrical Magnetic Impact Power Hammer Drills Machine
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-                <li>
-                  <img src="/test/static/picture/product-4.jpg" alt="Image">
-                  <router-link to="/vertical/shopping-cart">
-                    Professional Cordless Drill Power Tools Set Competitive Price
-                  </router-link>
-                  <span>$125.00</span>
-                  <i class="ri-close-fill"></i>
-                </li>
-              </ul>
-              <ul class="payable">
-                <li>
-                  應付總額
-                </li>
-                <li class="total">
-                  <span>$564.00</span>
-                </li>
-              </ul>
-              <ul class="cart-check-btn">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    查看購物車
-                  </router-link>
-                </li>
-                <li class="checkout">
-                  <router-link to="/vertical/checkout" class="default-btn">
-                    結帳
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+    <!-- 麵包屑 -->
     <div class="page-title-area">
       <div class="container">
         <div class="page-title-content">
           <ul>
-            <li>
-              <router-link to="/vertical/index">
-                首頁
-              </router-link>
-            </li>
-            <li class="active">商品詳情</li>
+            <li><router-link to="/vertical/index">首頁</router-link></li>
+            <li v-if="categoryFirst"><router-link to="/vertical/products">{{ categoryFirst }}</router-link></li>
+            <li class="active">{{ product ? product.name : '商品詳情' }}</li>
           </ul>
         </div>
       </div>
     </div>
 
+    <!-- 載入中 -->
+    <div v-if="loading" class="pd-loading-wrap">
+      <div class="pd-spinner"></div>
+      <p class="pd-loading-text">載入商品資訊…</p>
+    </div>
 
-    <section class="product-details-area ptb-54">
+    <!-- 錯誤 -->
+    <div v-else-if="errorMsg" class="pd-error-wrap">
+      <i class="ri-error-warning-line"></i>
+      <p>{{ errorMsg }}</p>
+      <router-link to="/vertical/products" class="default-btn">返回商品列表</router-link>
+    </div>
+
+    <!-- 商品主體 -->
+    <section v-else-if="detail" class="product-details-area ptb-54">
       <div class="container">
-        <div class="row align-items-center">
-          <div class="product-view-one">
-            <div class="modal-content p-0">
-              <div class="row align-items-center">
-                <div class="col-lg-6">
-                  <div class="product-view-one-image">
-                    <div id="big" class="owl-carousel owl-theme">
-                      <div class="item">
-                        <img src="/test/static/picture/product-1.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-2.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-3.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-4.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-5.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-6.jpg" alt="Image">
-                      </div>
-                    </div>
-                    <div id="thumbs" class="owl-carousel owl-theme">
-                      <div class="item">
-                        <img src="/test/static/picture/product-1.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-2.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-3.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-4.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-5.jpg" alt="Image">
-                      </div>
-                      <div class="item">
-                        <img src="/test/static/picture/product-6.jpg" alt="Image">
-                      </div>
-                    </div>
+
+        <!-- 上方：圖片 + 資訊 -->
+        <div class="row align-items-start pd-top-row">
+
+          <!-- 左：圖片畫廊 -->
+          <div class="col-lg-5 col-md-6">
+            <div class="pd-gallery">
+              <div class="pd-main-img-wrap">
+                <!-- 當前激活項為視頻 -->
+                <video
+                  v-if="videoFile && isActiveVideo"
+                  :src="activeMediaItem.fileUrl"
+                  controls
+                  class="pd-main-video"
+                  preload="metadata"
+                ></video>
+                <!-- 當前激活項為圖片（含無視頻時的預設狀態） -->
+                <img v-else :src="activeImg" :alt="product.name" class="pd-main-img" />
+                <span v-if="product.sale >= 100" class="pd-badge-hot">熱銷</span>
+              </div>
+              <!-- 縮圖條：有視頻則視頻排第一，後接圖片 -->
+              <div v-if="allMediaItems.length > 1" class="pd-thumbs-row">
+                <div
+                  v-for="(item, i) in allMediaItems"
+                  :key="item.id"
+                  class="pd-thumb"
+                  :class="{ active: activeImgIdx === i }"
+                  @click="activeImgIdx = i"
+                >
+                  <div v-if="Number(item.fileType) === 1" class="pd-video-thumb">
+                    <i class="ri-play-circle-fill"></i>
+                    <span v-if="item.duration" class="pd-video-dur">{{ item.duration }}s</span>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="product-content ml-15">
-                    <h3>
-                      Cordless Drill Professional Combo Drill And Screwdriver
-                    </h3>
-                    <div class="product-review">
-                      <div class="rating">
-                        <i class="ri-star-fill"></i>
-                        <i class="ri-star-fill"></i>
-                        <i class="ri-star-fill"></i>
-                        <i class="ri-star-fill"></i>
-                        <i class="ri-star-fill"></i>
-                      </div>
-                      <a href="#reviews" class="rating-count">4 則評價</a>
-                    </div>
-                    <div class="price">
-                      <span class="new-price">$119.0 <del>$219.0</del></span>
-                      <span class="in-stock">現貨供應（8 件）</span>
-                    </div>
-                    <ul class="product-info">
-                      <li>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus dicta a
-                          earum aspernatur ea, possimus ad at officia quisquam quos, fugiat quasi
-                          nostrum ullam commodi quia, cum laborum dolor molestias fugiat quasi
-                          nostrum ullam</p>
-                      </li>
-                      <li>
-                        <span>商品編號：</span>
-                        001
-                      </li>
-                      <li>
-                        <span>供貨狀態：</span>
-                        可購買
-                      </li>
-                      <li>
-                        <span>品牌：</span>
-                        Ehay
-                      </li>
-                      <li>
-                        <span>分類：</span>
-                        <router-link to="/vertical/products">電動鑽</router-link>
-                      </li>
-                    </ul>
-                    <div class="product-color-switch">
-                      <ul>
-                        <li>
-                          <span>顏色：</span>
-                        </li>
-                        <li>
-                          <button title="Black" class="color-black"></button>
-                        </li>
-                        <li>
-                          <button title="White" class="color-white"></button>
-                        </li>
-                        <li class="active">
-                          <button title="Green" class="color-green"></button>
-                        </li>
-                        <li>
-                          <button title="Yellow Green" class="color-yellowgreen"></button>
-                        </li>
-                        <li>
-                          <button title="Teal" class="color-teal"></button>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="product-add-to-cart">
-                      <div class="input-counter">
-                                            <span class="minus-btn">
-                                                <i class="ri-add-line"></i>
-                                            </span>
-                        <input type="text" value="1">
-                        <span class="plus-btn">
-                                                <i class="ri-subtract-line"></i>
-                                            </span>
-                      </div>
-                      <router-link to="/vertical/shopping-cart" class="default-btn">
-                        <i class="ri-shopping-cart-line"></i>
-                        加入購物車
-                      </router-link>
-                    </div>
-                    <div class="wishlist-btn">
-                      <router-link to="/vertical/wishlist" class="default-btn">
-                        <i class="ri-heart-line"></i>
-                        加入收藏
-                      </router-link>
-                    </div>
-                    <div class="share-this-product">
-                      <ul>
-                        <li>
-                          <span>分享</span>
-                        </li>
-                        <li>
-                          <a href="javascript:;" target="_blank">
-                            <i class="ri-facebook-fill"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:;" target="_blank">
-                            <i class="ri-instagram-line"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:;" target="_blank">
-                            <i class="ri-linkedin-fill"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="javascript:;" target="_blank">
-                            <i class="ri-twitter-fill"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <img v-else :src="item.fileUrl" :alt="`商品圖片 ${i + 1}`" />
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-lg-12 col-md-12">
-            <div id="reviews" class="tab products-details-tab">
-              <div class="row">
-                <div class="col-lg-12 col-md-12">
-                  <ul class="tabs">
-                    <li>
-                      商品描述
-                    </li>
-                    <li>
-                      附加資訊
-                    </li>
-                    <li>
-                      評價
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                  <div class="tab_content">
-                    <div class="tabs_item">
-                      <div class="products-details-tab-content">
-                        <h3>商品描述</h3>
-                        <p>Design inspiration lorem ipsum dolor sit amet, consectetuer adipiscing
-                          elit. Morbi commodo, ipsum sed pharetra gravida, orci magna rhoncus
-                          neque, id pulvinar odio lorem non turpis. Nullam sit amet enim.
-                          Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat
-                          volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra
-                          posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod
-                          ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh
-                          eget ipsum. Nam consectetuer. Sed aliquam, nunc eget euismod
-                          ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh
-                          eget ipsum. Nulla libero. Vivamus pharetra posuere sapien.</p>
-                        <p>Design inspiration lorem ipsum dolor sit amet, consectetuer adipiscing
-                          elit. Morbi commodo, ipsum sed pharetra gravida, orci magna rhoncus
-                          neque, id pulvinar odio lorem non turpis. Nullam sit amet enim.
-                          Suspendisse id velit vitae ligula volutpat condimentum. Aliquam erat
-                          volutpat. Sed quis velit. Nulla facilisi. Nulla libero. Vivamus pharetra
-                          posuere sapien. Nam consectetuer. Sed aliquam, nunc eget euismod
-                          ullamcorper, lectus nunc ullamcorper orci, fermentum bibendum enim nibh
-                          eget ipsum. Nam consectetuer.</p>
-                        <h3>規格</h3>
-                        <ul class="specification">
-                          <li>型號：001</li>
-                          <li>電池化學：鋰電池</li>
-                          <li>電池電壓：120V</li>
-                          <li>電池容量：1.0Ah</li>
-                          <li>金屬最大容量：20mm</li>
-                          <li>重量：2.5kg</li>
-                          <li>鑽孔能力：混凝土：32 mm</li>
-                          <li>無負載轉速：0-520 rpm</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="tabs_item">
-                      <div class="products-details-tab-content">
-                        <ul class="additional-information">
-                          <li><span>品牌：</span> ThemeForest</li>
-                          <li><span>顏色：</span> 棕色</li>
-                          <li><span>尺寸：</span> 大、中</li>
-                          <li><span>重量：</span> 27 公斤</li>
-                          <li><span>尺寸：</span> 16 x 22 x 123 公分</li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="tabs_item">
-                      <div class="products-details-tab-content">
-                        <div class="product-review-form">
-                          <h3>顧客評價</h3>
-                          <div class="review-title">
-                            <div class="rating">
-                              <i class="ri-star-fill"></i>
-                              <i class="ri-star-fill"></i>
-                              <i class="ri-star-fill"></i>
-                              <i class="ri-star-fill"></i>
-                              <i class="ri-star-fill"></i>
-                            </div>
-                            <p>根據 3 則評價</p>
-                            <a href="#" class="btn default-btn">寫評價</a>
-                          </div>
-                          <div class="review-comments">
-                            <div class="review-item">
-                              <div class="rating">
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                              </div>
-                              <h3>Good</h3>
-                              <span><strong>Admin</strong> on <strong>July 18,
-                                                                2021</strong></span>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation labore et dolore</p>
-                              <a href="#" class="review-report-link">Report as
-                                Inappropriate</a>
-                            </div>
-                            <div class="review-item">
-                              <div class="rating">
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                              </div>
-                              <h3>Good</h3>
-                              <span><strong>Admin</strong> on <strong>July 20,
-                                                                2021</strong></span>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation labore et dolore</p>
-                              <a href="#" class="review-report-link">Report as
-                                Inappropriate</a>
-                            </div>
-                            <div class="review-item">
-                              <div class="rating">
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                                <i class="ri-star-fill"></i>
-                              </div>
-                              <h3>Good</h3>
-                              <span><strong>Admin</strong> on <strong>July 21,
-                                                                2021</strong></span>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                                do eiusmod tempor incididunt ut labore et dolore magna
-                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation labore et dolore</p>
-                              <a href="#" class="review-report-link">Report as
-                                Inappropriate</a>
-                            </div>
-                          </div>
-                          <div class="review-form">
-                            <h3>寫評價</h3>
-                            <form>
-                              <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                  <div class="form-group">
-                                    <label>姓名</label>
-                                    <input type="text" id="name" name="name"
-                                           placeholder="輸入您的姓名"
-                                           class="form-control"
-                                    >
-                                  </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                  <div class="form-group">
-                                    <label>電子郵件</label>
-                                    <input type="email" id="email" name="email"
-                                           placeholder="輸入您的電子郵件"
-                                           class="form-control"
-                                    >
-                                  </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12">
-                                  <div class="form-group">
-                                    <label>評價標題</label>
-                                    <input type="text" id="review-title"
-                                           name="review-title"
-                                           placeholder="輸入評價標題"
-                                           class="form-control"
-                                    >
-                                  </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12">
-                                  <div class="form-group">
-                                    <label>評價內容（1500 字）</label>
-                                    <textarea name="review-body" id="review-body"
-                                              cols="30" rows="8"
-                                              placeholder="在此輸入您的評論"
-                                              class="form-control"
-                                    ></textarea>
-                                  </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12">
-                                  <button type="submit" class="btn default-btn">提交
-                                    評價
-                                  </button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
+          <!-- 右：商品資訊 -->
+          <div class="col-lg-7 col-md-6">
+            <div class="pd-info">
+
+              <!-- 店鋪資訊 -->
+              <div v-if="detail.shopName" class="pd-shop-row">
+                <img v-if="detail.shopLogo" :src="detail.shopLogo" class="pd-shop-logo" alt="shop" />
+                <span class="pd-shop-name">{{ detail.shopName }}</span>
+                <span class="pd-shop-tag">官方直營</span>
+              </div>
+
+              <!-- 商品名稱 -->
+              <h1 class="pd-name">{{ product.name }}</h1>
+              <p v-if="product.subTitle" class="pd-subtitle">{{ product.subTitle }}</p>
+
+              <!-- 評分 & 銷量 -->
+              <div class="pd-meta-row">
+                <template v-if="hasRating">
+                  <div class="pd-star-row">
+                    <i v-for="n in 5" :key="n" :class="starClass(n)"></i>
+                    <span class="pd-avg-num">{{ detail.avgRating.toFixed(1) }}</span>
                   </div>
+                  <span class="pd-meta-sep">|</span>
+                  <span class="pd-rating-count">{{ detail.ratingCount }} 則評分</span>
+                  <span class="pd-meta-sep">|</span>
+                  <span class="pd-positive-rate">好評率 {{ detail.positiveRate.toFixed(1) }}%</span>
+                </template>
+                <span v-else class="pd-no-rating">尚無評分</span>
+                <span class="pd-sale-count"><i class="ri-fire-line"></i> 已售 {{ product.sale || 0 }} 件</span>
+              </div>
+
+              <!-- 價格 -->
+              <div class="pd-price-box">
+                <div class="pd-price-label">價格</div>
+                <div class="pd-price-values">
+                  <span class="pd-price-current">NT$&nbsp;{{ formatPrice(currentPrice) }}</span>
+                  <span v-if="currentOriginalPrice > currentPrice" class="pd-price-original">NT$&nbsp;{{ formatPrice(currentOriginalPrice) }}</span>
+                  <span v-if="discountPct > 0" class="pd-discount-chip">{{ (10 - Math.round(discountPct / 10)) }} 折</span>
                 </div>
               </div>
+
+              <!-- SKU 選擇（多規格時顯示） -->
+              <div v-if="skuList.length > 1" class="pd-sku-row">
+                <div class="pd-field-label">規格</div>
+                <div class="pd-sku-btns">
+                  <button
+                    v-for="sku in skuList"
+                    :key="sku.id"
+                    class="pd-sku-btn"
+                    :class="{
+                      active: selectedSkuId === sku.id,
+                      disabled: sku.xtProductSkuPriceVo.stock <= 0
+                    }"
+                    @click="selectSku(sku)"
+                  >
+                    <img v-if="sku.picUrl" :src="sku.picUrl" class="pd-sku-thumb" :alt="sku.name" />
+                    <span>{{ sku.name }}</span>
+                    <span v-if="sku.xtProductSkuPriceVo.stock <= 0" class="pd-sku-out">缺貨</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 庫存 -->
+              <div class="pd-stock-row">
+                <i :class="currentStock > 0 ? 'ri-checkbox-circle-fill' : 'ri-close-circle-fill'"
+                   :style="{ color: currentStock > 0 ? '#27ae60' : '#d9362e' }"></i>
+                <span :class="currentStock > 0 ? 'pd-stock-ok' : 'pd-stock-out'">
+                  {{ currentStock > 0 ? `現貨（剩餘 ${currentStock} 件）` : '已售完' }}
+                </span>
+              </div>
+
+              <!-- 數量 + 操作按鈕 -->
+              <div class="pd-buy-section">
+                <div class="pd-qty-wrap">
+                  <span class="pd-field-label">數量</span>
+                  <div class="pd-qty-ctrl">
+                    <button class="pd-qty-btn" @click="qty > 1 && qty--">－</button>
+                    <input
+                      class="pd-qty-input"
+                      type="number"
+                      v-model.number="qty"
+                      min="1"
+                      :max="currentStock || 999"
+                    />
+                    <button class="pd-qty-btn" @click="qty < (currentStock || 999) && qty++">＋</button>
+                  </div>
+                </div>
+                <div class="pd-action-btns">
+                  <router-link to="/vertical/shopping-cart" class="pd-btn-cart">
+                    <i class="ri-shopping-cart-line"></i>&nbsp;加入購物車
+                  </router-link>
+                  <router-link to="/vertical/checkout" class="pd-btn-buy">
+                    立即購買
+                  </router-link>
+                </div>
+              </div>
+
+              <!-- 服務標籤 -->
+              <div class="pd-trust-row">
+                <div class="pd-trust-item"><i class="ri-truck-line"></i><span>全館免運</span></div>
+                <div class="pd-trust-item"><i class="ri-shield-check-line"></i><span>品質保證</span></div>
+                <div class="pd-trust-item"><i class="ri-refresh-line"></i><span>7 天退換</span></div>
+                <div class="pd-trust-item"><i class="ri-lock-2-line"></i><span>安全支付</span></div>
+              </div>
+
+              <!-- 分享 -->
+              <div class="pd-share-row">
+                <span class="pd-share-label">分享：</span>
+                <a href="javascript:;" class="pd-share-icon"><i class="ri-facebook-fill"></i></a>
+                <a href="javascript:;" class="pd-share-icon"><i class="ri-instagram-line"></i></a>
+                <a href="javascript:;" class="pd-share-icon"><i class="ri-line-fill"></i></a>
+                <a href="javascript:;" class="pd-share-icon"><i class="ri-twitter-fill"></i></a>
+              </div>
+
             </div>
           </div>
         </div>
+
+        <!-- Tab 面板 -->
+        <div class="pd-tabs-section">
+          <div class="pd-tab-nav">
+            <button
+              v-for="(tab, i) in tabs"
+              :key="i"
+              class="pd-tab-btn"
+              :class="{ active: activeTab === i }"
+              @click="activeTab = i"
+            >{{ tab }}</button>
+          </div>
+
+          <div class="pd-tab-body">
+
+            <!-- 商品描述 -->
+            <div v-show="activeTab === 0" class="pd-tab-pane">
+              <div v-if="product.description" v-html="product.description" class="pd-desc-html"></div>
+              <div v-else class="pd-empty-hint">
+                <i class="ri-file-list-line"></i>
+                <p>暫無商品描述</p>
+              </div>
+            </div>
+
+            <!-- 評價 -->
+            <div v-show="activeTab === 1" class="pd-tab-pane pd-rating-tab">
+              <template v-if="hasRating">
+                <div class="pd-rating-overview">
+                  <div class="pd-score-block">
+                    <div class="pd-score-big">{{ detail.avgRating.toFixed(1) }}</div>
+                    <div class="pd-score-stars">
+                      <i v-for="n in 5" :key="n" :class="starClass(n)"></i>
+                    </div>
+                    <div class="pd-score-sub">滿分 5 分</div>
+                    <div class="pd-score-positive">好評率 {{ detail.positiveRate.toFixed(1) }}%</div>
+                  </div>
+                  <div class="pd-bars-block">
+                    <div v-for="star in [5, 4, 3, 2, 1]" :key="star" class="pd-bar-row">
+                      <span class="pd-bar-label">{{ star }} 星</span>
+                      <div class="pd-bar-track">
+                        <div
+                          class="pd-bar-fill"
+                          :style="{ width: barWidth(star) + '%' }"
+                        ></div>
+                      </div>
+                      <span class="pd-bar-count">{{ detail['star' + star + 'Count'] || 0 }} 人</span>
+                    </div>
+                    <p class="pd-rating-total-note">共 {{ detail.ratingCount }} 則評分</p>
+                  </div>
+                </div>
+              </template>
+              <div v-else class="pd-no-rating-panel">
+                <i class="ri-star-line"></i>
+                <p>此商品尚無評分</p>
+                <small>購買後可留下您的評分，幫助其他買家參考</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
 
-
-    <section class="best-seller-area pb-30">
+    <!-- 相關商品 -->
+    <section v-if="!loading && !errorMsg && relatedProducts.length" class="best-seller-area pb-30">
       <div class="container">
-        <div class="section-title">
-          <h2>相關商品</h2>
-        </div>
+        <div class="section-title"><h2>相關商品</h2></div>
         <div class="best-product-slider owl-carousel owl-theme">
-          <div class="single-products">
-            <div class="product-img">
-              <a href="">
-                <img src="/test/static/picture/product-1.jpg" alt="Image">
-              </a>
-            </div>
-            <div class="product-content">
-              <a href="" class="title">
-                Cordless Drill Professional Combo Drill And Screwdriver
-              </a>
-              <ul class="products-rating">
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <a href="">
-                    (03 則評價)
-                  </a>
-                </li>
-              </ul>
-              <ul class="products-price">
-                <li>
-                  $119.00
-                  <del>$219.00</del>
-                </li>
-                <li>
-                  <span>現貨供應</span>
-                </li>
-              </ul>
-              <ul class="products-cart-wish-view">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    <i class="ri-shopping-cart-line"></i>
-                    加入購物車
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/wishlist" class="wish-btn">
-                    <i class="ri-heart-line"></i>
-                  </router-link>
-                </li>
-                <li>
-                  <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="ri-eye-line"></i>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="single-products">
-            <div class="product-img">
-              <a href="">
-                <img src="/test/static/picture/product-2.jpg" alt="Image">
-              </a>
-            </div>
-            <div class="product-content">
-              <a href="" class="title">
-                Professional Cordless Drill Power Tools Set Competitive Price
-              </a>
-              <ul class="products-rating">
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <a href="">
-                    (03 則評價)
-                  </a>
-                </li>
-              </ul>
-              <ul class="products-price">
-                <li>
-                  $130.00
-                  <del>$250.00</del>
-                </li>
-                <li>
-                  <span>In Stock</span>
-                </li>
-              </ul>
-              <ul class="products-cart-wish-view">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    <i class="ri-shopping-cart-line"></i>
-                    加入購物車
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/wishlist" class="wish-btn">
-                    <i class="ri-heart-line"></i>
-                  </router-link>
-                </li>
-                <li>
-                  <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="ri-eye-line"></i>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="single-products">
-            <div class="product-img">
-              <a href="">
-                <img src="/test/static/picture/product-3.jpg" alt="Image">
-              </a>
-            </div>
-            <div class="product-content">
-              <a href="" class="title">
-                DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool
-              </a>
-              <ul class="products-rating">
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <a href="">
-                    (03 則評價)
-                  </a>
-                </li>
-              </ul>
-              <ul class="products-price">
-                <li>
-                  $150.00
-                  <del>$200.00</del>
-                </li>
-                <li>
-                  <span>In Stock</span>
-                </li>
-              </ul>
-              <ul class="products-cart-wish-view">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    <i class="ri-shopping-cart-line"></i>
-                    加入購物車
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/wishlist" class="wish-btn">
-                    <i class="ri-heart-line"></i>
-                  </router-link>
-                </li>
-                <li>
-                  <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="ri-eye-line"></i>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="single-products">
-            <div class="product-img">
-              <a href="">
-                <img src="/test/static/picture/product-4.jpg" alt="Image">
-              </a>
-            </div>
-            <div class="product-content">
-              <a href="" class="title">
-                Power Tools Set Chinese Manufacturer Production 50V
-              </a>
-              <ul class="products-rating">
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <a href="">
-                    (03 則評價)
-                  </a>
-                </li>
-              </ul>
-              <ul class="products-price">
-                <li>
-                  $111.00
-                  <del>$222.00</del>
-                </li>
-                <li>
-                  <span>In Stock</span>
-                </li>
-              </ul>
-              <ul class="products-cart-wish-view">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    <i class="ri-shopping-cart-line"></i>
-                    加入購物車
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/wishlist" class="wish-btn">
-                    <i class="ri-heart-line"></i>
-                  </router-link>
-                </li>
-                <li>
-                  <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="ri-eye-line"></i>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="single-products">
-            <div class="product-img">
-              <a href="">
-                <img src="/test/static/picture/product-5.jpg" alt="Image">
-              </a>
-            </div>
-            <div class="product-content">
-              <a href="" class="title">
-                Professional Cordless Drill Power Tools Set Competitive Price
-              </a>
-              <ul class="products-rating">
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <i class="ri-star-fill"></i>
-                </li>
-                <li>
-                  <a href="">
-                    (03 則評價)
-                  </a>
-                </li>
-              </ul>
-              <ul class="products-price">
-                <li>
-                  $222.00
-                  <del>$250.00</del>
-                </li>
-                <li>
-                  <span>In Stock</span>
-                </li>
-              </ul>
-              <ul class="products-cart-wish-view">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">
-                    <i class="ri-shopping-cart-line"></i>
-                    加入購物車
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/wishlist" class="wish-btn">
-                    <i class="ri-heart-line"></i>
-                  </router-link>
-                </li>
-                <li>
-                  <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="ri-eye-line"></i>
-                  </button>
-                </li>
-              </ul>
-            </div>
+          <div v-for="p in relatedProducts" :key="p.id">
+            <ProductCard :product="p" variant="standard" fallback-img="/test/static/picture/product-1.jpg" />
           </div>
         </div>
       </div>
     </section>
-
 
     <VerticalSubscribe />
-
     <VerticalFoot />
 
   </div>
-
 </template>
 
 <script>
 import VerticalHead from './components/head.vue'
 import VerticalFoot from './components/foot.vue'
 import VerticalSubscribe from './components/subscribe.vue'
+import ProductCard from '@c/ProductCard'
 import verticalMixin from '@/mixins/vertical'
+import { frontGetProductByIdNoLogin, frontListNoLogin } from '@/api/product/purchase'
+
+const FALLBACK = '/test/static/picture/product-1.jpg'
+const RELATED_CAROUSEL_CFG = {
+  loop: true, margin: 24, nav: true, dots: false, autoplay: true,
+  smartSpeed: 1000, autoplayHoverPause: true,
+  navText: ["<i class='ri-arrow-left-s-line'></i>", "<i class='ri-arrow-right-s-line'></i>"],
+  responsive: { 0: { items: 1 }, 576: { items: 2 }, 992: { items: 3 }, 1200: { items: 4 } }
+}
 
 export default {
   name: 'ProductDetails',
-  components: { VerticalHead, VerticalFoot, VerticalSubscribe },
+  components: { VerticalHead, VerticalFoot, VerticalSubscribe, ProductCard },
   mixins: [verticalMixin],
   metaInfo: {
-    title: 'Ehay - 商品詳情'
+    title: 'makura - 商品詳情'
+  },
+  data() {
+    return {
+      loading: true,
+      errorMsg: '',
+      detail: null,
+      activeImgIdx: 0,
+      selectedSkuId: null,
+      qty: 1,
+      activeTab: 0,
+      tabs: ['商品描述', '評價'],
+      relatedProducts: []
+    }
+  },
+  computed: {
+    product() {
+      return this.detail && this.detail.xtProductVo
+    },
+    videoFile() {
+      if (!this.detail || !this.detail.videoInfo) return null
+      // 後端商品詳情接口已單獨返回 videoInfo 欄位，這裡統一適配舊代碼期望的字段結構
+      const v = this.detail.videoInfo
+      return {
+        id: v.id,
+        fileId: v.fileId,
+        fileName: v.fileName,
+        fileUrl: v.fileUrl,
+        duration: v.duration,
+        fileType: 1,
+        isMainImage: 0,
+        sortOrder: 0,
+      }
+    },
+    galleryImages() {
+      if (!this.detail) return []
+      return (this.detail.xtProductFileVos || [])
+        .filter(f => Number(f.fileType) === 0)
+        .sort((a, b) => Number(a.sortOrder) - Number(b.sortOrder))
+    },
+    // 淘宝式：视频（若存在）排第一，后面跟图片
+    allMediaItems() {
+      return [...(this.videoFile ? [this.videoFile] : []), ...this.galleryImages]
+    },
+    activeMediaItem() {
+      return this.allMediaItems[this.activeImgIdx] || this.allMediaItems[0] || null
+    },
+    isActiveVideo() {
+      return !!this.activeMediaItem && Number(this.activeMediaItem.fileType) === 1
+    },
+    activeImg() {
+      return this.activeMediaItem ? this.activeMediaItem.fileUrl || FALLBACK : FALLBACK
+    },
+    skuList() {
+      return (this.detail && this.detail.xtProductSkuVos) || []
+    },
+    selectedSku() {
+      if (!this.selectedSkuId) return this.skuList[0] || null
+      return this.skuList.find(s => s.id === this.selectedSkuId) || this.skuList[0] || null
+    },
+    currentPrice() {
+      return this.selectedSku ? Number(this.selectedSku.xtProductSkuPriceVo.price) : 0
+    },
+    currentOriginalPrice() {
+      return this.selectedSku ? Number(this.selectedSku.xtProductSkuPriceVo.beforeDiscountPrice) : 0
+    },
+    currentStock() {
+      return this.selectedSku ? Number(this.selectedSku.xtProductSkuPriceVo.stock) : 0
+    },
+    discountPct() {
+      if (!this.currentOriginalPrice || this.currentOriginalPrice <= this.currentPrice) return 0
+      return Math.round((this.currentOriginalPrice - this.currentPrice) / this.currentOriginalPrice * 100)
+    },
+    hasRating() {
+      return this.detail && this.detail.ratingCount !== null && Number(this.detail.ratingCount) > 0
+    },
+    categoryFirst() {
+      if (!this.product || !this.product.categoryPath) return ''
+      return this.product.categoryPath.split('/')[0] || ''
+    }
+  },
+  watch: {
+    '$route.query.id'(newId) {
+      if (newId) {
+        this.resetState()
+        this.loadProduct(newId)
+      }
+    }
+  },
+  created() {
+    const id = this.$route.query.id
+    if (id) {
+      this.loadProduct(id)
+    } else {
+      this.loading = false
+      this.errorMsg = '商品 ID 不存在，請從商品列表進入'
+    }
+  },
+  methods: {
+    resetState() {
+      this.detail = null
+      this.activeImgIdx = 0
+      this.selectedSkuId = null
+      this.qty = 1
+      this.activeTab = 0
+      this.relatedProducts = []
+      this.errorMsg = ''
+    },
+    async loadProduct(id) {
+      this.loading = true
+      try {
+        const res = await frontGetProductByIdNoLogin(id)
+        if (res && res.code === 200 && res.data) {
+          this.detail = res.data
+          const skus = this.detail.xtProductSkuVos || []
+          if (skus.length) this.selectedSkuId = skus[0].id
+          this.loadRelated()
+        } else {
+          this.errorMsg = (res && res.msg) || '商品不存在或已下架'
+        }
+      } catch (e) {
+        this.errorMsg = '載入商品失敗，請稍後再試'
+      } finally {
+        this.loading = false
+        this.$nextTick(() => requestAnimationFrame(() => this.initRelatedCarousel()))
+      }
+    },
+    async loadRelated() {
+      try {
+        const catId = this.product && this.product.productCategoryId
+        const res = await frontListNoLogin({ pageNum: 1, pageSize: 8, productCategoryId: catId || undefined })
+        const list = (res && (res.rows || res.data)) || []
+        const curId = this.$route.query.id
+        this.relatedProducts = list.filter(p => String(p.id) !== String(curId))
+      } catch (e) {
+        this.relatedProducts = []
+      }
+      this.$nextTick(() => requestAnimationFrame(() => this.initRelatedCarousel()))
+    },
+    selectSku(sku) {
+      this.selectedSkuId = sku.id
+      this.qty = 1
+      if (sku.picUrl) {
+        const idx = this.allMediaItems.findIndex(item => item.fileUrl === sku.picUrl)
+        if (idx >= 0) this.activeImgIdx = idx
+      }
+    },
+    starClass(n) {
+      const avg = Number(this.detail ? this.detail.avgRating : 0)
+      if (n <= Math.floor(avg)) return 'ri-star-fill pd-star-gold'
+      if (n - 0.5 <= avg) return 'ri-star-half-fill pd-star-gold'
+      return 'ri-star-line pd-star-empty'
+    },
+    barWidth(star) {
+      const total = Number(this.detail && this.detail.ratingCount)
+      if (!total) return 0
+      return Math.round((Number(this.detail['star' + star + 'Count']) || 0) / total * 100)
+    },
+    formatPrice(v) {
+      return (Number(v) || 0).toLocaleString('zh-TW', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    },
+    initRelatedCarousel(retry = 0) {
+      if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
+        if (retry < 100) setTimeout(() => this.initRelatedCarousel(retry + 1), 100)
+        return
+      }
+      const $ = jQuery
+      const $el = $('.best-product-slider')
+      if (!$el.length) return
+      try {
+        if ($el.data('owl.carousel')) $el.trigger('destroy.owl.carousel').removeClass('owl-loaded')
+        if (!$el.hasClass('owl-carousel')) $el.addClass('owl-carousel')
+        $el.owlCarousel(RELATED_CAROUSEL_CFG)
+      } catch (e) {}
+    }
   }
 }
 </script>
+
 <style>
-/* 第三方库全局样式（不能 scoped，否则动态生成的元素无法匹配） */
 @import '/test/static/css/bootstrap.min.css';
 @import '/test/static/css/owl.theme.default.min.css';
 @import '/test/static/css/owl.carousel.min.css';
@@ -812,29 +482,559 @@ export default {
 </style>
 
 <style scoped>
-/* 确保样式在 Vue 组件中正确应用 */
-.vertical-page {
+/* ===== 基礎 ===== */
+.vertical-page { width: 100%; }
+.vertical-page :deep(*) { box-sizing: border-box; }
+.vertical-page :deep(.container) { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 12px; }
+.vertical-page :deep(.row) { display: flex; flex-wrap: wrap; margin: 0 -12px; }
+.vertical-page :deep([class*="col-"]) { padding: 0 12px; }
+
+/* ===== 載入 / 錯誤 ===== */
+.pd-loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 16px;
+}
+.pd-spinner {
+  width: 44px;
+  height: 44px;
+  border: 4px solid #e6f4f6;
+  border-top-color: #1A8FA4;
+  border-radius: 50%;
+  animation: pd-spin .8s linear infinite;
+}
+@keyframes pd-spin { to { transform: rotate(360deg); } }
+.pd-loading-text { color: #1A8FA4; font-size: 14px; letter-spacing: 1px; }
+
+.pd-error-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  gap: 12px;
+  color: #999;
+}
+.pd-error-wrap i { font-size: 48px; color: #d9362e; }
+.pd-error-wrap p { font-size: 16px; color: #555; }
+
+/* ===== 頁面頂部行 ===== */
+.pd-top-row { padding-bottom: 48px; }
+
+/* ===== 圖片畫廊 ===== */
+.pd-gallery { position: sticky; top: 20px; }
+
+.pd-main-img-wrap {
+  position: relative;
   width: 100%;
+  padding-top: 100%;
+  background: #f7f8fa;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+.pd-main-img {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  transition: transform .35s ease;
+}
+.pd-main-img-wrap:hover .pd-main-img { transform: scale(1.04); }
+
+.pd-badge-discount {
+  position: absolute;
+  top: 14px; right: 14px;
+  background: #d9362e;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 2;
+}
+.pd-badge-hot {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: #ff6b35;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  z-index: 2;
 }
 
-.vertical-page :deep(*) {
-  box-sizing: border-box;
+/* 視頻播放器（主展示區） */
+.pd-main-video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #000;
+  border-radius: 12px;
 }
 
-.vertical-page :deep(.container) {
+/* 視頻縮圖 */
+.pd-video-thumb {
   width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: 0 12px;
+  height: 100%;
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 6px;
 }
+.pd-video-thumb i {
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.9);
+}
+.pd-video-dur {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+/* 視頻縮圖選中態：沿用 .pd-thumb.active 的青色邊框 */
 
-.vertical-page :deep(.row) {
+.pd-thumbs-row {
   display: flex;
   flex-wrap: wrap;
-  margin: 0 -12px;
+  gap: 8px;
+  margin-top: 12px;
+}
+.pd-thumb {
+  width: 70px;
+  height: 70px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f7f8fa;
+  transition: border-color .2s ease;
+  flex-shrink: 0;
+}
+.pd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.pd-thumb.active { border-color: #1A8FA4; }
+.pd-thumb:hover { border-color: #1A8FA4; }
+
+/* ===== 商品資訊面板 ===== */
+.pd-info { display: flex; flex-direction: column; gap: 18px; }
+
+.pd-shop-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #f0f8fa;
+  border-radius: 8px;
+  border-left: 3px solid #1A8FA4;
+}
+.pd-shop-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+.pd-shop-name { font-size: 13px; font-weight: 700; color: #333; }
+.pd-shop-tag {
+  font-size: 11px;
+  color: #1A8FA4;
+  background: #d7eef2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-left: auto;
 }
 
-.vertical-page :deep([class*="col-"]) {
-  padding: 0 12px;
+.pd-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.4;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+.pd-subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* 評分行 */
+.pd-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.pd-star-row { display: flex; align-items: center; gap: 3px; }
+.pd-star-gold { color: #f5a623; font-size: 15px; }
+.pd-star-empty { color: #ddd; font-size: 15px; }
+.pd-avg-num { font-size: 14px; font-weight: 700; color: #f5a623; margin-left: 4px; }
+.pd-meta-sep { color: #ddd; }
+.pd-rating-count { color: #1A8FA4; font-weight: 600; }
+.pd-positive-rate { color: #27ae60; font-weight: 600; }
+.pd-no-rating { color: #aaa; font-size: 13px; }
+.pd-sale-count {
+  margin-left: auto;
+  color: #ff6b35;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* 價格區塊 */
+.pd-price-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #fef9f0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  border: 1px solid #f5e6c8;
+}
+.pd-price-label {
+  font-size: 13px;
+  color: #888;
+  white-space: nowrap;
+  min-width: 32px;
+}
+.pd-price-values { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.pd-price-current {
+  font-size: 32px;
+  font-weight: 800;
+  color: #d9362e;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.pd-price-original {
+  font-size: 15px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+.pd-discount-chip {
+  font-size: 13px;
+  background: #d9362e;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* SKU 選擇 */
+.pd-sku-row { display: flex; align-items: flex-start; gap: 12px; }
+.pd-field-label {
+  font-size: 13px;
+  color: #888;
+  white-space: nowrap;
+  min-width: 32px;
+  padding-top: 6px;
+}
+.pd-sku-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.pd-sku-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  transition: all .2s ease;
+  position: relative;
+}
+.pd-sku-btn:hover { border-color: #1A8FA4; color: #1A8FA4; }
+.pd-sku-btn.active { border-color: #1A8FA4; background: #e8f5f7; color: #1A8FA4; font-weight: 700; }
+.pd-sku-btn.disabled { opacity: 0.5; cursor: not-allowed; }
+.pd-sku-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+.pd-sku-out {
+  font-size: 10px;
+  background: #999;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* 庫存 */
+.pd-stock-row { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.pd-stock-ok { color: #27ae60; font-weight: 600; }
+.pd-stock-out { color: #d9362e; font-weight: 600; }
+
+/* 數量 + 購買 */
+.pd-buy-section { display: flex; flex-direction: column; gap: 14px; }
+.pd-qty-wrap { display: flex; align-items: center; gap: 12px; }
+.pd-qty-ctrl {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.pd-qty-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f5f5f5;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.pd-qty-btn:hover { background: #e8f5f7; color: #1A8FA4; }
+.pd-qty-input {
+  width: 56px;
+  height: 36px;
+  border: none;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #333;
+  outline: none;
+  appearance: textfield;
+}
+.pd-qty-input::-webkit-outer-spin-button,
+.pd-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.pd-action-btns { display: flex; gap: 12px; }
+.pd-btn-cart {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px 24px;
+  border: 2px solid #1A8FA4;
+  border-radius: 8px;
+  color: #1A8FA4;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.pd-btn-cart:hover { background: #1A8FA4; color: #fff; }
+.pd-btn-buy {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 24px;
+  background: #1A8FA4;
+  color: #fff;
+  border: 2px solid #1A8FA4;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.pd-btn-buy:hover { background: #157285; border-color: #157285; color: #fff; }
+
+/* 服務標籤 */
+.pd-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.pd-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #555;
+  background: #f7f9fa;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #eee;
+}
+.pd-trust-item i { color: #1A8FA4; font-size: 14px; }
+
+/* 分享 */
+.pd-share-row { display: flex; align-items: center; gap: 10px; }
+.pd-share-label { font-size: 13px; color: #888; }
+.pd-share-icon {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 16px;
+  transition: all .2s ease;
+}
+.pd-share-icon:hover { background: #1A8FA4; border-color: #1A8FA4; color: #fff; }
+
+/* ===== Tab 面板 ===== */
+.pd-tabs-section {
+  margin-top: 48px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pd-tab-nav {
+  display: flex;
+  background: #f7f9fa;
+  border-bottom: 1px solid #eee;
+}
+.pd-tab-btn {
+  padding: 16px 28px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: #666;
+  cursor: pointer;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all .2s ease;
+  letter-spacing: 0.5px;
+}
+.pd-tab-btn:hover { color: #1A8FA4; }
+.pd-tab-btn.active {
+  color: #1A8FA4;
+  border-bottom-color: #1A8FA4;
+  background: #fff;
+}
+.pd-tab-body { background: #fff; }
+.pd-tab-pane { padding: 32px; }
+
+/* 商品描述 HTML */
+.pd-desc-html :deep(img) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 8px auto;
+  border-radius: 6px;
+}
+.pd-desc-html :deep(p) { line-height: 1.8; color: #444; margin-bottom: 12px; }
+.pd-desc-html :deep(h3) { font-size: 18px; font-weight: 700; color: #222; margin: 24px 0 12px; }
+.pd-desc-html :deep(ul) { padding-left: 20px; color: #555; line-height: 1.9; }
+
+.pd-empty-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: #aaa;
+  gap: 10px;
+}
+.pd-empty-hint i { font-size: 40px; }
+.pd-empty-hint p { font-size: 15px; }
+
+/* 評價 Tab */
+.pd-rating-tab { min-height: 220px; }
+.pd-rating-overview {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.pd-score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+}
+.pd-score-big {
+  font-size: 56px;
+  font-weight: 900;
+  color: #f5a623;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.pd-score-stars { display: flex; gap: 3px; }
+.pd-score-stars .pd-star-gold { font-size: 18px; color: #f5a623; }
+.pd-score-stars .pd-star-empty { font-size: 18px; color: #ddd; }
+.pd-score-sub { font-size: 12px; color: #aaa; }
+.pd-score-positive { font-size: 13px; color: #27ae60; font-weight: 700; margin-top: 4px; }
+
+.pd-bars-block { flex: 1; min-width: 240px; }
+.pd-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.pd-bar-label { font-size: 13px; color: #888; width: 34px; flex-shrink: 0; }
+.pd-bar-track {
+  flex: 1;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.pd-bar-fill {
+  height: 100%;
+  background: #f5a623;
+  border-radius: 4px;
+  transition: width .4s ease;
+}
+.pd-bar-count { font-size: 12px; color: #aaa; width: 30px; text-align: right; flex-shrink: 0; }
+.pd-rating-total-note { font-size: 12px; color: #aaa; margin-top: 8px; }
+
+.pd-no-rating-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+  gap: 10px;
+  color: #aaa;
+}
+.pd-no-rating-panel i { font-size: 48px; color: #f5a623; opacity: 0.4; }
+.pd-no-rating-panel p { font-size: 16px; color: #555; font-weight: 600; margin: 0; }
+.pd-no-rating-panel small { font-size: 13px; color: #aaa; }
+
+/* ===== 相關商品 ===== */
+:deep(.best-product-slider .tw-product-card) {
+  border: none !important;
+}
+
+/* ===== RWD ===== */
+@media (max-width: 767px) {
+  .pd-top-row { flex-direction: column; }
+  .col-lg-5, .col-lg-7 { width: 100%; padding: 0 12px; }
+  .pd-gallery { position: static; margin-bottom: 24px; }
+  .pd-price-current { font-size: 26px; }
+  .pd-action-btns { flex-direction: column; }
+  .pd-btn-cart, .pd-btn-buy { flex: unset; width: 100%; }
+  .pd-rating-overview { flex-direction: column; gap: 24px; }
+  .pd-tab-pane { padding: 20px; }
 }
 </style>
