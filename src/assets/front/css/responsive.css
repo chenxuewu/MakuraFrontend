@@ -297,7 +297,10 @@
   }
   .trending-product-list .single-list .product-content .title {
     font-size: 13px;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .trending-product-list .single-list .product-content .products-price li {
     font-size: 15px;

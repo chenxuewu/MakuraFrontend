@@ -115,7 +115,7 @@ export default {
 .tw-product-card {
   background: #fff;
   border: 1px solid #eee;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
   display: flex;
@@ -124,7 +124,7 @@ export default {
 }
 .tw-product-card:hover {
   border-color: #1A8FA4;
-  box-shadow: 0 8px 24px rgba(26, 143, 164, 0.12);
+  box-shadow: 0 6px 20px rgba(26, 143, 164, 0.14);
   transform: translateY(-2px);
 }
 
@@ -134,6 +134,7 @@ export default {
   aspect-ratio: 1 / 1;
   background: #f7f7f7;
   overflow: hidden;
+  border-radius: 4px 4px 0 0;
 }
 .tw-card-img img {
   width: 100%;
@@ -149,42 +150,43 @@ export default {
   position: absolute;
   top: 10px;
   left: 10px;
-  padding: 4px 10px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 4px;
   color: #fff;
   font-size: 12px;
-  font-weight: 600;
-  line-height: 1.2;
+  font-weight: 700;
+  line-height: 1.4;
   letter-spacing: 0.5px;
 }
 .badge-new { background: #1A8FA4; }
-.badge-hot { background: #ff4d4f; }
+.badge-hot { background: #d9362e; }
 
 .badge-discount {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: linear-gradient(135deg, #ff6b35, #ff4d4f);
+  background: #d9362e;
   color: #fff;
-  padding: 4px 10px;
-  border-radius: 20px;
+  padding: 3px 10px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
 .wish-corner {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
-  font-size: 18px;
+  color: #555;
+  font-size: 17px;
   transition: all .2s ease;
 }
 .wish-corner:hover {
@@ -196,29 +198,31 @@ export default {
   padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
   flex: 1;
 }
 
 .tw-subtitle {
   font-size: 12px;
-  color: #999;
+  color: #888;
   line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 .tw-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #222;
-  line-height: 1.4;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 42px;
+  letter-spacing: 0.2px;
 }
 .tw-title:hover { color: #1A8FA4; }
 
@@ -229,15 +233,16 @@ export default {
   flex-wrap: wrap;
 }
 .tw-price-current {
-  color: #ff4d4f;
+  color: #c0392b;
   font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 .tw-price-original {
   color: #999;
-  font-size: 13px;
+  font-size: 12px;
   text-decoration: line-through;
+  font-weight: 400;
 }
 
 .tw-badges {
@@ -248,13 +253,15 @@ export default {
 .tw-badge {
   font-size: 11px;
   color: #1A8FA4;
-  background: #e6f4f6;
+  background: #e8f5f7;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 3px;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: 0.2px;
 }
 .tw-badge i { font-size: 13px; }
 
@@ -266,8 +273,8 @@ export default {
   gap: 4px;
 }
 .tw-dot { color: #ccc; }
-.tw-stock-ok { color: #52c41a; }
-.tw-stock-out { color: #ff4d4f; }
+.tw-stock-ok { color: #27ae60; font-weight: 600; }
+.tw-stock-out { color: #d9362e; }
 
 .tw-actions {
   display: flex;
@@ -281,15 +288,16 @@ export default {
   color: #fff;
   border: none;
   padding: 9px 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
+  letter-spacing: 0.5px;
   transition: background .2s ease;
 }
 .tw-btn-main:hover { background: #157285; color: #fff; }
@@ -298,8 +306,8 @@ export default {
   height: 36px;
   border: 1px solid #ddd;
   background: #fff;
-  border-radius: 6px;
-  color: #666;
+  border-radius: 4px;
+  color: #555;
   font-size: 16px;
   cursor: pointer;
   display: inline-flex;
@@ -311,6 +319,7 @@ export default {
 .tw-btn-icon:hover {
   border-color: #1A8FA4;
   color: #1A8FA4;
+  background: #e8f5f7;
 }
 
 /* ========== 橫向小卡 ========== */
@@ -327,7 +336,7 @@ export default {
   flex-shrink: 0;
   width: 90px;
   height: 90px;
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
   background: #f7f7f7;
 }
@@ -341,11 +350,12 @@ export default {
   top: 4px;
   left: 4px;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: 3px;
   font-size: 10px;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.4;
+  background: #1A8FA4;
 }
 
 .tw-list-body {
@@ -358,21 +368,23 @@ export default {
 }
 .tw-list-title {
   font-size: 14px;
-  font-weight: 600;
-  color: #222;
+  font-weight: 700;
+  color: #1a1a1a;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
+  letter-spacing: 0.2px;
 }
 .tw-list-title:hover { color: #1A8FA4; }
 .tw-list-subtitle {
   font-size: 11px;
-  color: #999;
+  color: #888;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: 500;
 }
 .tw-list-price {
   display: flex;
@@ -380,10 +392,10 @@ export default {
   gap: 6px;
   flex-wrap: wrap;
 }
-.tw-list-price .tw-price-current { font-size: 15px; }
-.tw-list-price .tw-price-original { font-size: 11px; }
+.tw-list-price .tw-price-current { font-size: 15px; font-weight: 800; color: #c0392b; }
+.tw-list-price .tw-price-original { font-size: 11px; color: #999; text-decoration: line-through; }
 .tw-list-evidence {
   font-size: 11px;
-  color: #999;
+  color: #888;
 }
 </style>

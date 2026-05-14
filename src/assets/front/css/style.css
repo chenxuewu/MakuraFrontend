@@ -2625,6 +2625,9 @@ Products Area Style
   margin-bottom: 12px;
   display: block;
   font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .single-products .product-content .title:hover {

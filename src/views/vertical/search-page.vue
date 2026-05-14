@@ -608,9 +608,9 @@
               <div class="col-12">
                 <div class="pagination-area">
                   <span class="page-numbers current" aria-current="page">1</span>
-                  <router-link to="/vertical/blog" class="page-numbers">2</router-link>
-                  <router-link to="/vertical/blog" class="page-numbers">3</router-link>
-                  <router-link to="/vertical/blog" class="next page-numbers">
+                  <router-link to="/vertical/products" class="page-numbers">2</router-link>
+                  <router-link to="/vertical/products" class="page-numbers">3</router-link>
+                  <router-link to="/vertical/products" class="next page-numbers">
                     <i class="ri-arrow-right-line"></i>
                   </router-link>
                 </div>
@@ -625,55 +625,55 @@
                     <h3>商品分類</h3>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       電動工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       手工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       無線工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       焊接與銲接
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       園藝工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       安全工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       工地照明工具
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       工具配件
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/vertical/blog">
+                    <router-link to="/vertical/products">
                       <i class="ri-arrow-right-s-line"></i>
                       戶外動力設備
                     </router-link>

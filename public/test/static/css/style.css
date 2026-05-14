@@ -2883,8 +2883,8 @@ Flash Style
 
 .flash-deals-wrap {
   border: 1px solid #dddddd;
-  padding: 24px;
-  padding-bottom: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .flash-deals-wrap.need-border {

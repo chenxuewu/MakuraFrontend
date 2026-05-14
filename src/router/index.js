@@ -134,15 +134,15 @@ export const constantRoutes = [
         meta: { title: '常見問題', noAuth: true }
       },
       {
-        path: 'blog',
-        name: 'VerticalBlog',
-        component: () => import('@/views/vertical/blog.vue'),
-        meta: { title: '部落格', noAuth: true }
+        path: 'knowledge',
+        name: 'VerticalKnowledge',
+        component: () => import('@/views/vertical/knowledge-list.vue'),
+        meta: { title: '工具知識百科', noAuth: true }
       },
       {
-        path: 'blog-details',
-        name: 'VerticalBlogDetails',
-        component: () => import('@/views/vertical/blog-details.vue'),
+        path: 'knowledge-detail',
+        name: 'VerticalKnowledgeDetail',
+        component: () => import('@/views/vertical/knowledge.vue'),
         meta: { title: '文章詳情', noAuth: true }
       },
       {
@@ -252,12 +252,6 @@ export const constantRoutes = [
         name: 'VerticalPassword',
         component: () => import('@/views/vertical/password.vue'),
         meta: { title: '變更密碼', noAuth: true }
-      },
-      {
-        path: 'blog-left-sidebar',
-        name: 'VerticalBlogLeftSidebar',
-        component: () => import('@/views/vertical/blog-left-sidebar.vue'),
-        meta: { title: '部落格左側欄', noAuth: true }
       },
       {
         path: 'index',

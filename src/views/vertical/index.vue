@@ -248,26 +248,22 @@
                   <img src="/test/static/picture/customer-1.png" class="customer" alt="Image">
                   <img src="/test/static/picture/quote.png" class="quote" alt="Image">
                   <div class="avatar-name">
-                    <h3>Georgia Cargill</h3>
-                    <span>財務專員</span>
+                    <h3>喬治亞</h3>
+                    <span>財務主管</span>
                   </div>
                 </div>
-                <p>"Vivamus suscipit tortor eget felis porttitor volutpat. Nulla porttitor accumsan tincidunt. Lorem
-                  ipsum dolor sit amet, consectetur elit. Donec sollicitudin molestie eget malesuada accumsan sit amet,
-                  consectetur."</p>
+                <p>「收到商品後非常滿意，包裝仔細，工具組的做工精細，功能也很齊全。用了一個月下來，CP值真的很高，强烈推薦給需要工具的朋友們！」</p>
               </div>
               <div class="single-customer">
                 <div class="avatar">
                   <img src="/test/static/picture/customer-2.png" class="customer" alt="Image">
                   <img src="/test/static/picture/quote.png" class="quote" alt="Image">
                   <div class="avatar-name">
-                    <h3>Alex Dew</h3>
-                    <span>財務行銷</span>
+                    <h3>阿萊斯</h3>
+                    <span>行銷經理</span>
                   </div>
                 </div>
-                <p>"Vivamus suscipit tortor eget felis porttitor volutpat. Nulla porttitor accumsan tincidunt. Lorem
-                  ipsum dolor sit amet, consectetur elit. Donec sollicitudin molestie eget malesuada accumsan sit amet,
-                  consectetur."</p>
+                <p>「出貨速度快，客服態度也很好，回覆問題都很即時。商品跟照片描述完全一致，沒有色差。整體購物體驗很棒，已經是回頭客了！」</p>
               </div>
             </div>
           </div>
@@ -291,7 +287,7 @@
                     <div class="col-xl-6">
                       <div class="tw-flash-body">
                         <div v-if="product.subTitle" class="tw-subtitle">{{ product.subTitle }}</div>
-                        <router-link :to="`/vertical/product-details?id=${product.id}`" class="tw-title">
+                        <router-link :to="`/vertical/product-details?id=${product.id}`" class="tw-title" :title="product.name">
                           {{ product.name }}
                         </router-link>
                         <div class="tw-price-row">
@@ -420,145 +416,32 @@
 
 
 
-    <section class="our-blog-area pb-30">
-      <div class="container">
-        <div class="section-title">
-          <h2>部落格文章</h2>
-          <router-link to="/vertical/blog" class="read-more">
-            查看全部
-          </router-link>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-4 col-md-6">
-            <div class="single-blog">
-              <router-link to="/vertical/blog-details">
-                <img src="/test/static/picture/blog-1.jpg" alt="Image">
-              </router-link>
-              <div class="blog-content">
-                <ul>
-                  <li>
-                    <a href="javascript:;">
-                      管理員
-                    </a>
-                  </li>
-                  <li>
-                    July 30, 2021
-                  </li>
-                  <li>
-                    <router-link to="/vertical/blog-details">
-                      (03) 則評論
-                    </router-link>
-                  </li>
-                </ul>
-                <h3>
-                  <router-link to="/vertical/blog-details">
-                    Powerful Motor For The Best Performance In Compound Miter Saw
-                  </router-link>
-                </h3>
-                <router-link to="/vertical/blog-details" class="default-btn">
-                  閱讀更多
-                  <i class="ri-arrow-right-line"></i>
-                </router-link>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="single-blog">
-              <router-link to="/vertical/blog-details">
-                <img src="/test/static/picture/blog-2.jpg" alt="Image">
-              </router-link>
-              <div class="blog-content">
-                <ul>
-                  <li>
-                    <a href="javascript:;">
-                      Admin
-                    </a>
-                  </li>
-                  <li>
-                    July 05, 2021
-                  </li>
-                  <li>
-                    <router-link to="/vertical/blog-details">
-                      (03) Comments
-                    </router-link>
-                  </li>
-                </ul>
-                <h3>
-                  <router-link to="/vertical/blog-details">
-                    Why We Used One Of The Best Corded Drill Power Tools
-                  </router-link>
-                </h3>
-                <router-link to="/vertical/blog-details" class="default-btn">
-                  Read More
-                  <i class="ri-arrow-right-line"></i>
-                </router-link>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="single-blog">
-              <router-link to="/vertical/blog-details">
-                <img src="/test/static/picture/blog-3.jpg" alt="Image">
-              </router-link>
-              <div class="blog-content">
-                <ul>
-                  <li>
-                    <a href="javascript:;">
-                      Admin
-                    </a>
-                  </li>
-                  <li>
-                    July 15, 2021
-                  </li>
-                  <li>
-                    <router-link to="/vertical/blog-details">
-                      (03) Comments
-                    </router-link>
-                  </li>
-                </ul>
-                <h3>
-                  <router-link to="/vertical/blog-details">
-                    The Most Advanced Quality Tools For Welding Work
-                  </router-link>
-                </h3>
-                <router-link to="/vertical/blog-details" class="default-btn">
-                  Read More
-                  <i class="ri-arrow-right-line"></i>
-                </router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <div class="partner-area pb-54">
-      <div class="container">
-        <div class="partner-wrap">
-          <div class="partner-slider owl-carousel owl-theme">
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-1.png" alt="Image">
-            </div>
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-2.png" alt="Image">
-            </div>
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-3.png" alt="Image">
-            </div>
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-4.png" alt="Image">
-            </div>
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-5.png" alt="Image">
-            </div>
-            <div class="partner-item">
-              <img src="/test/static/picture/partner-6.png" alt="Image">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<!--    <div class="partner-area pb-54">-->
+<!--      <div class="container">-->
+<!--        <div class="partner-wrap">-->
+<!--          <div class="partner-slider owl-carousel owl-theme">-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-1.png" alt="Image">-->
+<!--            </div>-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-2.png" alt="Image">-->
+<!--            </div>-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-3.png" alt="Image">-->
+<!--            </div>-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-4.png" alt="Image">-->
+<!--            </div>-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-5.png" alt="Image">-->
+<!--            </div>-->
+<!--            <div class="partner-item">-->
+<!--              <img src="/test/static/picture/partner-6.png" alt="Image">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
 
     <section class="special-area pb-30">
@@ -899,12 +782,32 @@ export default {
   text-align: center;
 }
 
-/* ============== 台灣風格新樣式（配合 ProductCard 組件） ============== */
+/* 熱門分類卡片：統一圓角 + 與商品卡一致的 hover 色調 */
+.vertical-page :deep(.single-categories) {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+.vertical-page :deep(.single-categories::before) {
+  border-radius: 0;
+}
+.vertical-page :deep(.single-categories:hover) {
+  border-color: #1A8FA4;
+}
+.vertical-page :deep(.single-categories:hover h3 a) {
+  color: #1A8FA4;
+}
+.vertical-page :deep(.single-categories:hover img) {
+  transform: scale(1.05);
+}
+.vertical-page :deep(.single-categories img) {
+  transition: transform .3s ease;
+}
 
 /* 橫向小卡的容器（人氣商品 / 特別優惠 / 熱門商品 / 最高評價商品） */
-.tw-list-wrap {
+.vertical-page :deep(.tw-list-wrap) {
   border: 1px solid #eee;
-  border-radius: 8px;
+  border-radius: 4px;
   padding: 4px 16px;
   background: #fff;
 }
@@ -962,7 +865,6 @@ export default {
 }
 
 .tw-flash-body {
-  padding: 0 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -977,17 +879,18 @@ export default {
   margin: 0;
 }
 .tw-flash-body .tw-title {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 700;
   color: #222;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
   margin: 0;
 }
 .tw-flash-body .tw-title:hover { color: #1A8FA4; }
+.tw-flash-body .tw-title { cursor: pointer; }
 
 .tw-flash-body .tw-price-row {
   display: flex;
@@ -1100,15 +1003,6 @@ export default {
   background: #1A8FA4;
   color: #fff;
   font-weight: 600;
-}
-.tw-category-tabs li.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #ff6b35;
 }
 .tw-category-tabs li.tw-tab-empty {
   cursor: default;

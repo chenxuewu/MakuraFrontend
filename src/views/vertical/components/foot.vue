@@ -69,7 +69,7 @@
                   <router-link to="/vertical/privacy-policy">隱私權政策</router-link>
                 </li>
                 <li>
-                  <router-link to="/vertical/blog">部落格‧職人專欄</router-link>
+                  <router-link to="/vertical/privacy-policy">隱私權政策</router-link>
                 </li>
               </ul>
             </div>

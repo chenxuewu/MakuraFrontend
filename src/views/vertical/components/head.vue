@@ -237,6 +237,9 @@
                         <router-link to="/vertical/faq" class="nav-link">常見問題</router-link>
                       </li>
                       <li class="nav-item">
+                        <router-link to="/vertical/knowledge" :class="['nav-link', { active: activeNav === 'knowledge' }]">工具知識百科</router-link>
+                      </li>
+                      <li class="nav-item">
                         <router-link to="/vertical/store-location" class="nav-link">門市據點</router-link>
                       </li>
                       <li class="nav-item">
@@ -253,20 +256,6 @@
                       </li>
                       <li class="nav-item">
                         <router-link to="/vertical/404" class="nav-link">404 頁面</router-link>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" :class="['nav-link', { active: activeNav === 'blog' }]">部落格<i class="ri-arrow-down-s-line"></i></a>
-                    <ul class="dropdown-menu">
-                      <li class="nav-item">
-                        <router-link to="/vertical/blog" class="nav-link">部落格</router-link>
-                      </li>
-                      <li class="nav-item">
-                        <router-link to="/vertical/blog-left-sidebar" class="nav-link">部落格左側欄</router-link>
-                      </li>
-                      <li class="nav-item">
-                        <router-link to="/vertical/blog-details" class="nav-link">文章詳情</router-link>
                       </li>
                     </ul>
                   </li>
@@ -373,11 +362,11 @@ export default {
         '/vertical/store-location', '/vertical/search-page', '/vertical/privacy-policy',
         '/vertical/terms-conditions', '/vertical/coming-soon', '/vertical/404'
       ]
-      const blogRoutes = ['/vertical/blog', '/vertical/blog-left-sidebar', '/vertical/blog-details']
+      const knowledgeRoutes = ['/vertical/knowledge', '/vertical/knowledge-detail']
       if (homeRoutes.includes(path)) return 'home'
       if (shopRoutes.includes(path)) return 'shop'
       if (pageRoutes.includes(path)) return 'pages'
-      if (blogRoutes.includes(path)) return 'blog'
+      if (knowledgeRoutes.includes(path)) return 'knowledge'
       if (path === '/vertical/contact') return 'contact'
       return ''
     }
