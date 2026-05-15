@@ -13,12 +13,6 @@
             <div class="col-lg-8">
               <ul class="header-left-content">
                 <li>
-                  <router-link to="/vertical/about">關於我們</router-link>
-                </li>
-                <li>
-                  <router-link to="/vertical/store-location">門市據點</router-link>
-                </li>
-                <li>
                   <router-link to="/vertical/order-tracking">訂單追蹤</router-link>
                 </li>
                 <li>客服專線：<a href="tel:0800588168"><span>0800-588-168</span></a>（免付費）</li>
@@ -27,9 +21,6 @@
             <div class="col-lg-4">
               <div class="header-right-content">
                 <ul>
-                  <li>
-                    <router-link to="/vertical/my-account">我的帳號</router-link>
-                  </li>
                   <li>
                     <div class="usd">
                       <select>
@@ -50,6 +41,31 @@
                         <a class="dropdown-item" href="#"><img src="/test/static/picture/china.png" alt="简体中文">简体中文</a>
                       </div>
                     </div>
+                  </li>
+                  <li v-if="!isLoggedIn" class="header-user-li">
+                    <router-link to="/vertical/login" class="header-login-btn">登入</router-link>
+                  </li>
+                  <li v-else class="header-user-li"
+                      @mouseenter="userDropdownVisible = true"
+                      @mouseleave="userDropdownVisible = false">
+                    <div class="header-user-trigger">
+                      <span class="header-user-name">{{ userName || '會員' }}</span>
+                      <i class="ri-arrow-down-s-line header-arrow" :class="{ 'arrow-up': userDropdownVisible }"></i>
+                    </div>
+                    <transition name="dropdown-fade">
+                      <div v-show="userDropdownVisible" class="header-user-dropdown">
+                        <router-link to="/vertical/my-account" class="header-dd-item">
+                          <i class="ri-user-line"></i>我的帳號
+                        </router-link>
+                        <router-link to="/vertical/order-history" class="header-dd-item">
+                          <i class="ri-file-list-3-line"></i>我的訂單
+                        </router-link>
+                        <div class="header-dd-divider"></div>
+                        <a href="javascript:;" class="header-dd-item header-dd-logout" @click="handleLogout">
+                          <i class="ri-logout-box-r-line"></i>登出
+                        </a>
+                      </div>
+                    </transition>
                   </li>
                 </ul>
               </div>
@@ -336,6 +352,7 @@
 <script>
 import verticalMixin, { DEPENDENCIES, CAROUSEL_SELECTORS, OWL_CONFIGS } from '@/mixins/vertical'
 import { frontGetCategoryTree } from '@/api/product/category'
+import { mapState } from 'vuex'
 
 export default {
   name: 'VerticalHead',
@@ -344,11 +361,15 @@ export default {
     return {
       categoryVisible: false,  // 分類下拉顯示狀態
       categories: [],          // 後端動態分類列表
-      headSearchInput: ''     // 頂部搜尋框輸入
+      headSearchInput: '',     // 頂部搜尋框輸入
+      userDropdownVisible: false   // 會員下拉顯示狀態
     }
   },
   created() {
     this.fetchCategories()
+    if (this.token) {
+      this.$store.dispatch('GetInfo')
+    }
   },
   watch: {
     // 路由變化時重新判斷是否首頁
@@ -357,6 +378,18 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      token: state => state.user.token,
+      userName: state => state.user.name,
+      avatar: state => state.user.avatar
+    }),
+    isLoggedIn() {
+      return !!this.token
+    },
+    userInitial() {
+      const name = this.userName || 'M'
+      return name.trim().charAt(0).toUpperCase()
+    },
     isHomePage() {
       return this.$route.path === '/vertical/index' ||
              this.$route.path === '/vertical/' ||
@@ -412,6 +445,20 @@ export default {
     onCategoryLeave() {
       this.categoryVisible = false
     },
+
+    handleLogout() {
+      this.$confirm('確定要登出嗎？', '提示', {
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          this.$message.success('已成功登出')
+          this.$router.push('/vertical/index')
+        })
+      }).catch(() => {})
+    },
+
     loadScripts() {
       if (window._verticalScriptsLoaded) {
         // 脚本已加载，不再重复初始化（custom.js 已处理）
@@ -524,6 +571,137 @@ export default {
 }
 .middle-header .search-box .search-clear:hover {
   color: #555;
+}
+
+/* 登入按鈕 */
+.header-login-btn {
+  color: #fff;
+  background: #e4002b;
+  padding: 5px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.header-login-btn:hover {
+  background: #c40025;
+  color: #fff;
+}
+
+/* 會員下拉 */
+.header-user-li {
+  /* 覆蓋全局 li 分隔線，避免 last-child 邏輯影響 */
+  border-right: none !important;
+}
+.header-user-wrap,
+.header-user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.header-avatar-wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.header-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.header-avatar-initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 50%;
+}
+.header-user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1a2e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 72px;
+}
+.header-arrow {
+  font-size: 16px;
+  color: #888;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.header-arrow.arrow-up {
+  transform: rotate(180deg);
+}
+
+/* 下拉面板 */
+.header-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  z-index: 9999;
+  overflow: hidden;
+}
+.header-dd-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #444;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.header-dd-item i {
+  font-size: 16px;
+  color: #888;
+  transition: color 0.15s;
+}
+.header-dd-item:hover {
+  background: #f4f4f8;
+  color: #1a1a2e;
+}
+.header-dd-item:hover i {
+  color: #1a1a2e;
+}
+.header-dd-logout {
+  color: #1a1a2e;
+}
+.header-dd-logout i {
+  color: #1a1a2e;
+}
+.header-dd-logout:hover {
+  background: #f4f4f8;
+}
+.header-dd-divider {
+  height: 1px;
+  background: #eee;
+  margin: 4px 0;
+}
+
+/* 下拉動畫 */
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: opacity 0.15s, transform 0.15s;
+}
+.dropdown-fade-enter,
+.dropdown-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 </style>
 

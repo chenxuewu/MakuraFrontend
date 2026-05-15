@@ -11,9 +11,14 @@
       <!-- 右上角折扣徽章 -->
       <span v-if="discountPercent > 0" class="badge-discount">-{{ discountPercent }}%</span>
       <!-- 右下角收藏 -->
-      <router-link to="/vertical/wishlist" class="wish-corner" aria-label="加入收藏">
-        <i class="ri-heart-line"></i>
-      </router-link>
+      <button
+        class="wish-corner"
+        :class="{ 'is-collected': collected, 'is-loading': collectLoading }"
+        :aria-label="collected ? '取消收藏' : '加入收藏'"
+        @click.prevent="handleToggleCollect"
+      >
+        <i :class="collected ? 'ri-heart-fill' : 'ri-heart-line'"></i>
+      </button>
     </div>
 
     <div class="tw-card-body">
@@ -72,12 +77,22 @@
 </template>
 
 <script>
+import { collectProduct } from '@/api/product/productUserCollect'
+import { getToken } from '@/utils/auth'
+import { Message } from 'element-ui'
+
 export default {
   name: 'ProductCard',
   props: {
     product: { type: Object, required: true },
     variant: { type: String, default: 'standard' }, // 'standard' | 'list'
     fallbackImg: { type: String, default: '/test/static/picture/product-6.jpg' }
+  },
+  data() {
+    return {
+      collected: false,
+      collectLoading: false
+    }
   },
   computed: {
     imgSrc() {
@@ -101,10 +116,37 @@ export default {
       return Number(this.product.sale) >= 10
     }
   },
+  created() {
+    this.collected = !!this.product.collected
+  },
   methods: {
     formatPrice(value) {
       const n = Number(value) || 0
       return n.toLocaleString('zh-TW', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    },
+    handleToggleCollect() {
+      if (!getToken()) {
+        this.$router.push('/vertical/login').catch(() => {})
+        return
+      }
+      if (this.collectLoading) return
+      this.collectLoading = true
+      const isCollect = !this.collected
+      const formData = { isCollect, productIds: this.product.id }
+      collectProduct(formData)
+        .then(res => {
+          this.collected = isCollect
+          if (isCollect) {
+            Message.success('已成功收藏商品')
+          } else {
+            Message.success('已取消收藏')
+          }
+          this.$emit('collect-change', { productId: this.product.id, collected: isCollect })
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.collectLoading = false
+        })
     }
   }
 }
@@ -192,6 +234,17 @@ export default {
 .wish-corner:hover {
   background: #1A8FA4;
   color: #fff;
+}
+.wish-corner.is-collected {
+  color: #e74c3c;
+}
+.wish-corner.is-collected:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+.wish-corner.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .tw-card-body {

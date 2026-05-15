@@ -159,6 +159,10 @@
                   </div>
                 </div>
                 <div class="pd-action-btns">
+                  <button class="pd-btn-collect" :class="{ collected: collected, loading: collectLoading }" @click="handleToggleCollect">
+                    <i :class="collected ? 'ri-heart-fill' : 'ri-heart-line'"></i>
+                    {{ collected ? '已收藏' : '加入收藏' }}
+                  </button>
                   <router-link to="/vertical/shopping-cart" class="pd-btn-cart">
                     <i class="ri-shopping-cart-line"></i>&nbsp;加入購物車
                   </router-link>
@@ -277,6 +281,8 @@ import VerticalSubscribe from './components/subscribe.vue'
 import ProductCard from '@c/ProductCard'
 import verticalMixin from '@/mixins/vertical'
 import { frontGetProductByIdNoLogin, frontListNoLogin } from '@/api/product/purchase'
+import { collectProduct } from '@/api/product/productUserCollect'
+import { getToken } from '@/utils/auth'
 
 const FALLBACK = '/test/static/picture/product-1.jpg'
 const RELATED_CAROUSEL_CFG = {
@@ -303,7 +309,9 @@ export default {
       qty: 1,
       activeTab: 0,
       tabs: ['商品描述', '評價'],
-      relatedProducts: []
+      relatedProducts: [],
+      collected: false,
+      collectLoading: false
     }
   },
   computed: {
@@ -400,6 +408,8 @@ export default {
       this.activeTab = 0
       this.relatedProducts = []
       this.errorMsg = ''
+      this.collected = false
+      this.collectLoading = false
     },
     async loadProduct(id) {
       this.loading = true
@@ -453,6 +463,24 @@ export default {
     },
     formatPrice(v) {
       return (Number(v) || 0).toLocaleString('zh-TW', { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    },
+    handleToggleCollect() {
+      if (!getToken()) {
+        this.$router.push('/vertical/login').catch(() => {})
+        return
+      }
+      if (this.collectLoading) return
+      this.collectLoading = true
+      const isCollect = !this.collected
+      collectProduct({ isCollect, productIds: this.product.id })
+        .then(() => {
+          this.collected = isCollect
+          this.$message.success(isCollect ? '已成功收藏商品' : '已取消收藏')
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.collectLoading = false
+        })
     },
     initRelatedCarousel(retry = 0) {
       if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
@@ -845,6 +873,35 @@ export default {
   white-space: nowrap;
 }
 .pd-btn-cart:hover { background: #1A8FA4; color: #fff; }
+.pd-btn-collect {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px 20px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  color: #555;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all .2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pd-btn-collect:hover {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: #fff5f5;
+}
+.pd-btn-collect.collected {
+  border-color: #e74c3c;
+  color: #e74c3c;
+  background: #fff5f5;
+}
+.pd-btn-collect.collected i { color: #e74c3c; }
+.pd-btn-collect.loading { opacity: 0.6; pointer-events: none; }
 .pd-btn-buy {
   flex: 1;
   display: inline-flex;
