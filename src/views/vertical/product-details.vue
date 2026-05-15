@@ -40,19 +40,19 @@
           <div class="col-lg-5 col-md-6">
             <div class="pd-gallery">
               <div class="pd-main-img-wrap">
-                <!-- 當前激活項為視頻 -->
+                <!-- 有視頻資料 → 視頻播放器；否則 → 圖片 -->
                 <video
                   v-if="videoFile && isActiveVideo"
                   :src="activeMediaItem.fileUrl"
                   controls
+                  autoplay
                   class="pd-main-video"
                   preload="metadata"
                 ></video>
-                <!-- 當前激活項為圖片（含無視頻時的預設狀態） -->
                 <img v-else :src="activeImg" :alt="product.name" class="pd-main-img" />
                 <span v-if="product.sale >= 100" class="pd-badge-hot">熱銷</span>
               </div>
-              <!-- 縮圖條：有視頻則視頻排第一，後接圖片 -->
+              <!-- 縮圖條：有視頻資料則視頻排第一，後接圖片 -->
               <div v-if="allMediaItems.length > 1" class="pd-thumbs-row">
                 <div
                   v-for="(item, i) in allMediaItems"
@@ -312,8 +312,10 @@ export default {
     },
     videoFile() {
       if (!this.detail || !this.detail.videoInfo) return null
-      // 後端商品詳情接口已單獨返回 videoInfo 欄位，這裡統一適配舊代碼期望的字段結構
       const v = this.detail.videoInfo
+      // 必須有真實的 fileUrl 才算有視頻數據
+      if (!v.fileUrl) return null
+      // 後端商品詳情接口已單獨返回 videoInfo 欄位，這裡統一適配舊代碼期望的字段結構
       return {
         id: v.id,
         fileId: v.fileId,
