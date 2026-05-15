@@ -5,7 +5,7 @@
         <div class="col-lg-2">
           <div class="logo">
             <router-link to="/vertical/index">
-              <img src="/test/static/picture/white-logo.png" alt="Makura">
+              <img src="/test/static/picture/logo.png" alt="makura">
             </router-link>
           </div>
         </div>

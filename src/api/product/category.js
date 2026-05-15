@@ -53,3 +53,11 @@ export function frontGetCategoryTree() {
     method: 'get'
   })
 }
+
+// 前台——取得完整分類樹（含子分類，無需登入）
+export function frontAllGetCategoryTree() {
+  return request({
+    url: '/productAttributeCategory/frontAllGetCategoryTree',
+    method: 'get'
+  })
+}

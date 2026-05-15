@@ -108,7 +108,7 @@
           <div class="col-lg-2">
             <div class="logo">
               <a href="">
-                <img src="/test/static/picture/white-logo.png" alt="Image">
+                <img src="/test/static/picture/logo.png" alt="makura">
               </a>
             </div>
           </div>
