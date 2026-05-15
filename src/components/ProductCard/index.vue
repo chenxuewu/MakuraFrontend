@@ -46,9 +46,9 @@
       </div>
 
       <div class="tw-actions">
-        <router-link to="/vertical/shopping-cart" class="tw-btn-main">
+        <button class="tw-btn-main" @click.prevent="handleAddToCart" aria-label="加入購物車">
           <i class="ri-shopping-cart-line"></i> 加入購物車
-        </router-link>
+        </button>
         <button class="tw-btn-icon" data-bs-toggle="modal" data-bs-target="#exampleModal" aria-label="快速預覽">
           <i class="ri-eye-line"></i>
         </button>
@@ -149,6 +149,10 @@ export default {
         .finally(() => {
           this.collectLoading = false
         })
+    },
+
+    handleAddToCart() {
+      eventBus.$emit('open-add-to-cart', { productId: this.product.id })
     }
   }
 }

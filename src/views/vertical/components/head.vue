@@ -113,10 +113,10 @@
                   </router-link>
                 </li>
                 <li>
-<span class="cart" data-bs-toggle="modal" data-bs-target="#exampleModal-cart">
-<span class="wish-icon"><i class="ri-shopping-cart-line"></i><span class="count">{{ cartCount }}</span></span>
-<span class="favorite">購物車：</span>NT${{ cartTotalPrice.toFixed(2) }}
-</span>
+                  <router-link to="/vertical/shopping-cart">
+                    <span class="wish-icon"><i class="ri-shopping-cart-line"></i><span class="count">{{ cartCount }}</span></span>
+                    <span class="favorite">購物車</span>NT${{ cartTotalPrice.toFixed(2) }}
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -303,49 +303,7 @@
       </div>
     </header>
 
-    <div class="modal fade cart-shit" id="exampleModal-cart" tabindex="-1" aria-hidden="true">
-      <div class="cart-shit-wrap">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close-btn" data-bs-dismiss="modal"><i class="ri-close-fill"></i></button>
-            </div>
-            <div class="modal-body">
-              <ul class="cart-list">
-                <li><img src="/test/static/picture/product-1.jpg" alt="多功能大扭力充電式衝擊扳手">
-                  <router-link to="/vertical/shopping-cart">多功能大扭力充電式衝擊扳手（20V 鋰電）
-                  </router-link>
-                  <span>NT$1,890</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-2.jpg" alt="充電式電鏈鋸">
-                  <router-link to="/vertical/shopping-cart">充電式電鏈鋸（含 2 顆鋰電池）
-                  </router-link>
-                  <span>NT$1,490</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-3.jpg" alt="綠光雷射水平儀">
-                  <router-link to="/vertical/shopping-cart">12 線綠光雷射水平儀（防水防摔）
-                  </router-link>
-                  <span>NT$1,290</span><i class="ri-close-fill"></i></li>
-                <li><img src="/test/static/picture/product-4.jpg" alt="高轉速角度砂輪機">
-                  <router-link to="/vertical/shopping-cart">4 吋高轉速角度砂輪機
-                  </router-link>
-                  <span>NT$970</span><i class="ri-close-fill"></i></li>
-              </ul>
-              <ul class="payable">
-                <li>應付總額</li>
-                <li class="total"><span>NT$5,640</span></li>
-              </ul>
-              <ul class="cart-check-btn">
-                <li>
-                  <router-link to="/vertical/shopping-cart" class="default-btn">查看購物車</router-link>
-                </li>
-                <li class="checkout">
-                  <router-link to="/vertical/checkout" class="default-btn">結帳</router-link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AddToCartModal ref="addToCartModal" />
   </div>
 </template>
 
@@ -356,10 +314,12 @@ import { mapState } from 'vuex'
 import { cartList } from '@/api/cart/cart'
 import { listCollect } from '@/api/product/collect'
 import eventBus from '@/utils/eventBus'
+import AddToCartModal from './AddToCartModal.vue'
 
 export default {
   name: 'VerticalHead',
   mixins: [verticalMixin],
+  components: { AddToCartModal },
   data() {
     return {
       categoryVisible: false,  // 分類下拉顯示狀態
@@ -381,6 +341,7 @@ export default {
   mounted() {
     eventBus.$on('cart-updated', () => this.fetchCartAndWishCounts())
     eventBus.$on('wish-updated', () => this.fetchCartAndWishCounts())
+    eventBus.$on('open-add-to-cart', ({ productId }) => this.openAddToCart(productId))
   },
   beforeDestroy() {
     eventBus.$off('cart-updated')
@@ -470,6 +431,10 @@ export default {
         path: '/vertical/best-sellers',
         query: kw ? { keyword: kw } : {}
       })
+    },
+
+    openAddToCart(productId) {
+      this.$refs.addToCartModal.open(productId)
     },
 
     onCategoryEnter() {
@@ -609,8 +574,8 @@ export default {
 
 /* 登入按鈕 */
 .header-login-btn {
-  color: #fff;
-  background: #e4002b;
+  color: #fff !important;
+  background: #1A8FA4;
   padding: 5px 16px;
   border-radius: 4px;
   font-size: 14px;
@@ -618,8 +583,8 @@ export default {
   transition: background 0.2s;
 }
 .header-login-btn:hover {
-  background: #c40025;
-  color: #fff;
+  background: #157285;
+  color: #fff !important;
 }
 
 /* 會員下拉 */

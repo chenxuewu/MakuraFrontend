@@ -163,9 +163,9 @@
                     <i :class="collected ? 'ri-heart-fill' : 'ri-heart-line'"></i>
                     {{ collected ? '已收藏' : '加入收藏' }}
                   </button>
-                  <router-link to="/vertical/shopping-cart" class="pd-btn-cart">
+                  <button class="pd-btn-cart" @click.prevent="handleAddToCart">
                     <i class="ri-shopping-cart-line"></i>&nbsp;加入購物車
-                  </router-link>
+                  </button>
                   <router-link to="/vertical/checkout" class="pd-btn-buy">
                     立即購買
                   </router-link>
@@ -283,6 +283,7 @@ import verticalMixin from '@/mixins/vertical'
 import { frontGetProductByIdNoLogin, frontListNoLogin } from '@/api/product/purchase'
 import { collectProduct } from '@/api/product/productUserCollect'
 import { getToken } from '@/utils/auth'
+import eventBus from '@/utils/eventBus'
 
 const FALLBACK = '/test/static/picture/product-1.jpg'
 const RELATED_CAROUSEL_CFG = {
@@ -481,6 +482,14 @@ export default {
         .finally(() => {
           this.collectLoading = false
         })
+    },
+
+    handleAddToCart() {
+      if (!getToken()) {
+        this.$router.push('/vertical/login').catch(() => {})
+        return
+      }
+      eventBus.$emit('open-add-to-cart', { productId: this.product.id })
     },
     initRelatedCarousel(retry = 0) {
       if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
