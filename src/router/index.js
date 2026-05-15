@@ -259,6 +259,12 @@ export const constantRoutes = [
         component: () => import('@/views/vertical/index.vue'),
         meta: { title: '首頁版型二', noAuth: true }
       },
+      {
+        path: 'login',
+        name: 'VerticalLogin',
+        component: () => import('@/views/vertical/login.vue'),
+        meta: { title: '會員登入', noAuth: true }
+      },
     ]
   },
   {

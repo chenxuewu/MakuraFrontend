@@ -81,7 +81,7 @@ service.interceptors.response.use(res => {
         MessageBox.confirm('登入狀態已過期，您可以繼續留在該頁面，或者重新登入', '系統提示', { confirmButtonText: '重新登入', cancelButtonText: '取消', type: 'warning' }).then(() => {
           isRelogin.show = false;
           store.dispatch('LogOut').then(() => {
-            location.href = '/index';
+            location.href = '/#/vertical/login';
           })
       }).catch(() => {
         isRelogin.show = false;
