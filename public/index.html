@@ -8,6 +8,30 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= webpackConfig.name %></title>
     <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
+
+    <!-- 前台垂直頁面樣式：放在 index.html 中由瀏覽器同步載入，避免 Vue 元件透過 @import 在執行時抓取造成 FOUC（刷新時閃一下原樣式） -->
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/remixicon.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/meanmenu.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/animate.min.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/style.css">
+    <link rel="stylesheet" href="<%= BASE_URL %>test/static/css/responsive.css">
+
+    <!-- Owl Carousel 在 JS 初始化前所有 slide 會以原樣垂直堆疊顯示，造成「閃一下原始版面」的視覺。
+         在 .owl-loaded class 加上前先隱藏，等 JS 初始化完成自然顯示。 -->
+    <style>
+      .owl-carousel:not(.owl-loaded) { visibility: hidden !important; }
+      /* 預留首頁 Hero 輪播區的高度，避免 owl.carousel.min.css 把 .owl-carousel 設成 display:none 後，
+         下方分類先撐上來、輪播初始化好又被擠回去的 CLS（版面跳動） */
+      .hero-slider-area { min-height: 540px; }
+      @media (max-width: 1199px) { .hero-slider-area { min-height: 480px; } }
+      @media (max-width: 991px)  { .hero-slider-area { min-height: 420px; } }
+      @media (max-width: 767px)  { .hero-slider-area { min-height: 340px; } }
+      @media (max-width: 575px)  { .hero-slider-area { min-height: 300px; } }
+    </style>
+
 	  <style>
     html,
     body,

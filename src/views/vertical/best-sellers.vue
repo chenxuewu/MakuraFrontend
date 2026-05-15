@@ -76,6 +76,7 @@
     </div>
 
 
+    <!-- 麵包屑 -->
     <div class="page-title-area">
       <div class="container">
         <div class="page-title-content">
@@ -83,1032 +84,82 @@
             <li>
               <router-link to="/vertical/index">首頁</router-link>
             </li>
-            <li class="active">熱銷商品</li>
+            <li class="active">
+              <template v-if="searchKeyword">搜尋：{{ searchKeyword }}</template>
+              <template v-else>搜尋商品</template>
+            </li>
           </ul>
         </div>
       </div>
     </div>
 
-
-    <section class="best-seller-area ptb-54">
+    <section class="search-result-area ptb-40">
       <div class="container">
-        <div class="section-title text-center">
-          <h2>熱銷商品</h2>
+        <!-- 工具列：搜尋提示 + 排序 -->
+        <div class="search-toolbar">
+          <div class="search-toolbar-left">
+            <span v-if="searchKeyword" class="search-hint">
+              <i class="ri-search-line"></i>
+              關鍵字「<strong>{{ searchKeyword }}</strong>」的搜尋結果
+            </span>
+            <span class="search-count">
+              <i class="ri-list-check"></i>
+              共 <strong>{{ total }}</strong> 件符合條件
+            </span>
+          </div>
+          <div class="search-toolbar-right">
+            <label>排序：</label>
+            <select class="search-sort-select" v-model="sortKey" @change="doSearch">
+              <option
+                v-for="opt in sortOptions"
+                :key="opt.key"
+                :value="opt.key"
+              >{{ opt.label }}</option>
+            </select>
+          </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-1.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Cordless Drill Professional Combo Drill And Screwdriver
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $119.00
-                    <del>$219.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
+
+        <!-- 商品網格 -->
+        <div class="tw-product-grid">
+          <!-- 載入中 -->
+          <template v-if="productLoading">
+            <div v-for="n in 8" :key="n" class="tw-skeleton-card">
+              <div class="tw-skeleton-img"></div>
+              <div class="tw-skeleton-body">
+                <div class="tw-skeleton-line tw-skeleton-title"></div>
+                <div class="tw-skeleton-line tw-skeleton-price"></div>
+                <div class="tw-skeleton-line tw-skeleton-btn"></div>
               </div>
             </div>
+          </template>
+
+          <!-- 無資料 -->
+          <div v-else-if="!productList.length" class="tw-empty-state">
+            <i class="ri-search-line"></i>
+            <p>找不到符合「<strong>{{ searchKeyword || '全部商品' }}</strong>」的商品</p>
+            <a href="javascript:;" class="tw-empty-btn" @click="clearKeyword">清除搜尋</a>
           </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-2.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Professional Cordless Drill Power Tools Set Competitive Price
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $130.00
-                    <del>$250.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
+
+          <!-- 商品卡片 -->
+          <template v-else>
+            <div
+              v-for="product in productList"
+              :key="product.id"
+              class="tw-product-cell"
+            >
+              <ProductCard :product="product" variant="standard" fallback-img="/test/static/picture/product-6.jpg" />
             </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-3.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $150.00
-                    <del>$200.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-4.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Power Tools Set Chinese Manufacturer Production 50V
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $111.00
-                    <del>$222.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-5.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Professional Cordless Drill Power Tools Set Competitive Price
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $222.00
-                    <del>$250.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-6.jpg" alt="Image">
-                </router-link>
-                <span class="hot">Hot</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Cordless Drill Professional Combo Drill And Screwdriver
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $119.00
-                    <del>$219.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-7.jpg" alt="Image">
-                </router-link>
-                <span class="hot new">New</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Professional Cordless Drill Power Tools Competitive
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $130.00
-                    <del>$250.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-8.jpg" alt="Image">
-                </router-link>
-                <span class="hot">Hot</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  DFMALB 20V Max XX Oscillating Multi Tool Variable Speed Tool
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $150.00
-                    <del>$200.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-9.jpg" alt="Image">
-                </router-link>
-                <span class="hot new">New</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Power Tools Set Chinese Manufacturer Production 50V
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (03 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $111.00
-                    <del>$222.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-17.jpg" alt="Image">
-                </router-link>
-                <span class="hot new">New</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Electrical Magnetic Impact Power Hammer Drills
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (10 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $170.00
-                    <del>$220.00</del>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-18.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  High Quality Electric Hand Planer, 4-3/8-Inch
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (05 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $69.00
-                    <del>$90.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-19.jpg" alt="Image">
-                </router-link>
-                <span class="hot new">New</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  White Whale Vacuum Cleaner High Quality
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (10 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $129.00
-                    <del>$150.00</del>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-20.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  High Quality Carbon Steel Mini Drilling Machines
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (11 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $99.00
-                    <del>$150.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-21.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Power Hammer Drills 200V Machine Screwdriver
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (05 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $159.00
-                    <del>$200.00</del>
-                  </li>
-                  <li>
-                    <span>有現貨</span>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-22.jpg" alt="Image">
-                </router-link>
-                <span class="hot new">New</span>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Multi-function Screw Driver Set For Home Use
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (07 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $29.00
-                    <del>$50.00</del>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6">
-            <div class="single-products">
-              <div class="product-img">
-                <router-link to="/vertical/product-details">
-                  <img src="/test/static/picture/product-9.jpg" alt="Image">
-                </router-link>
-              </div>
-              <div class="product-content">
-                <router-link to="/vertical/product-details" class="title">
-                  Wall Polishing Square Sander Electric Machine
-                </router-link>
-                <ul class="products-rating">
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <i class="ri-star-fill"></i>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/product-details">
-                      (10 則評價)
-                    </router-link>
-                  </li>
-                </ul>
-                <ul class="products-price">
-                  <li>
-                    $89.00
-                    <del>$120.00</del>
-                  </li>
-                </ul>
-                <ul class="products-cart-wish-view">
-                  <li>
-                    <router-link to="/vertical/shopping-cart" class="default-btn">
-                      <i class="ri-shopping-cart-line"></i>
-                      加入購物車
-                    </router-link>
-                  </li>
-                  <li>
-                    <router-link to="/vertical/wishlist" class="wish-btn">
-                      <i class="ri-heart-line"></i>
-                    </router-link>
-                  </li>
-                  <li>
-                    <button class="eye-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <i class="ri-eye-line"></i>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="pagination-area text-center">
-              <span class="page-numbers current" aria-current="page">1</span>
-              <a href="" class="page-numbers">2</a>
-              <a href="" class="page-numbers">3</a>
-              <a href="" class="next page-numbers">
-                <i class="ri-arrow-right-line"></i>
-              </a>
-            </div>
-          </div>
+          </template>
+        </div>
+
+        <!-- 分頁 -->
+        <div v-if="total > pageSize" class="tw-pagination-wrap">
+          <Pagination
+            :total="total"
+            :page.sync="queryParams.pageNum"
+            :limit.sync="queryParams.pageSize"
+            @pagination="handlePagination"
+          />
         </div>
       </div>
     </section>
@@ -1126,14 +177,121 @@
 import VerticalHead from './components/head.vue'
 import VerticalFoot from './components/foot.vue'
 import VerticalSubscribe from './components/subscribe.vue'
+import ProductCard from '@c/ProductCard'
+import Pagination from '@c/Pagination'
 import verticalMixin from '@/mixins/vertical'
+import { frontListNoLogin } from '@/api/product/purchase'
 
 export default {
   name: 'BestSellers',
-  components: { VerticalHead, VerticalFoot, VerticalSubscribe },
+  components: { VerticalHead, VerticalFoot, VerticalSubscribe, ProductCard, Pagination },
   mixins: [verticalMixin],
   metaInfo: {
-    title: 'Ehay - 工具商店 HTML 模板'
+    title: '搜尋商品 - makura'
+  },
+  data() {
+    return {
+      productList: [],
+      productLoading: false,
+      total: 0,
+      pageSize: 12,
+
+      queryParams: {
+        pageNum: 1,
+        pageSize: 12
+      },
+      sortKey: '',
+      searchKeyword: '',
+      searchInput: '',
+
+      sortOptions: [
+        { key: '',           label: '預設排序',      sortType: null, sortMode: null },
+        { key: 'latest',     label: '最新上架',      sortType: 0,    sortMode: 1 },
+        { key: 'sale_desc',  label: '銷量：最多',    sortType: 1,    sortMode: 1 },
+        { key: 'price_asc',  label: '價格：由低到高', sortType: 2,    sortMode: 0 },
+        { key: 'price_desc', label: '價格：由高到低', sortType: 2,    sortMode: 1 }
+      ]
+    }
+  },
+  created() {
+    this.initFromQuery()
+    this.loadProducts()
+  },
+  watch: {
+    '$route.query.keyword'(newVal) {
+      this.searchKeyword = newVal || ''
+      this.searchInput = this.searchKeyword
+      this.queryParams.pageNum = 1
+      this.loadProducts()
+    }
+  },
+  methods: {
+    initFromQuery() {
+      const { keyword } = this.$route.query
+      if (keyword) {
+        this.searchKeyword = String(keyword)
+        this.searchInput = this.searchKeyword
+      }
+    },
+
+    async loadProducts() {
+      this.productLoading = true
+      try {
+        const params = {
+          pageNum: this.queryParams.pageNum,
+          pageSize: this.queryParams.pageSize
+        }
+        if (this.searchKeyword) {
+          params.name = this.searchKeyword
+        }
+        const sortOpt = this.sortOptions.find(o => o.key === this.sortKey)
+        if (sortOpt && sortOpt.sortType !== null) {
+          params.sortType = sortOpt.sortType
+          params.sortMode = sortOpt.sortMode
+        }
+        const res = await frontListNoLogin(params)
+        const list = (res && (res.rows || res.data || [])) || []
+        this.productList = Array.isArray(list) ? list : []
+        this.total = (res && Number(res.total)) || 0
+      } catch (e) {
+        console.warn('載入商品列表失敗', e)
+        this.productList = []
+        this.total = 0
+      } finally {
+        this.productLoading = false
+      }
+    },
+
+    onSearchKeyword() {
+      const kw = this.searchInput.trim()
+      this.searchKeyword = kw
+      this.$router.replace({
+        query: kw ? { keyword: kw } : {}
+      }).catch(() => {})
+      this.queryParams.pageNum = 1
+      this.loadProducts()
+    },
+
+    clearKeyword() {
+      this.searchKeyword = ''
+      this.searchInput = ''
+      this.$router.replace({ query: {} }).catch(() => {})
+      this.queryParams.pageNum = 1
+      this.loadProducts()
+    },
+
+    doSearch() {
+      this.queryParams.pageNum = 1
+      this.loadProducts()
+    },
+
+    handlePagination({ page }) {
+      this.queryParams.pageNum = page
+      this.loadProducts()
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    }
   }
 }
 </script>
@@ -1151,9 +309,9 @@ export default {
 </style>
 
 <style scoped>
-/* 确保样式在 Vue 组件中正确应用 */
 .vertical-page {
   width: 100%;
+  background: #f7f8fa;
 }
 
 .vertical-page :deep(*) {
@@ -1175,5 +333,254 @@ export default {
 
 .vertical-page :deep([class*="col-"]) {
   padding: 0 12px;
+}
+
+/* 麵包屑 */
+.vertical-page :deep(.page-title-area) {
+  background: linear-gradient(135deg, #1A8FA4 0%, #157285 100%);
+  padding: 28px 0;
+}
+
+.vertical-page :deep(.page-title-content ul) {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  list-style: none;
+}
+
+.vertical-page :deep(.page-title-content li),
+.vertical-page :deep(.page-title-content a) {
+  color: #fff;
+  font-size: 14px;
+}
+
+.vertical-page :deep(.page-title-content li.active) {
+  opacity: .85;
+}
+
+/* ====== 搜尋結果區 ====== */
+.search-result-area {
+  background: transparent;
+}
+
+/* 工具列 */
+.search-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.search-toolbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.search-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #555;
+}
+
+.search-hint i {
+  color: #1A8FA4;
+  font-size: 16px;
+}
+
+.search-hint strong {
+  color: #1A8FA4;
+  font-weight: 600;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-count {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.search-count i {
+  color: #1A8FA4;
+  font-size: 16px;
+}
+
+.search-count strong {
+  color: #1A8FA4;
+  font-weight: 600;
+  margin: 0 2px;
+}
+
+.search-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-toolbar-right label {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.search-sort-select {
+  padding: 6px 28px 6px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.search-sort-select:hover,
+.search-sort-select:focus {
+  border-color: #1A8FA4;
+}
+
+/* ====== 商品網格 ====== */
+.tw-product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.tw-product-cell {
+  min-width: 0;
+}
+
+@media (max-width: 1199px) {
+  .tw-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 991px) {
+  .tw-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .tw-product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 載入骨架屏 */
+.tw-skeleton-card {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tw-skeleton-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: tw-shimmer 1.4s ease-in-out infinite;
+}
+
+.tw-skeleton-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tw-skeleton-line {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: tw-shimmer 1.4s ease-in-out infinite;
+}
+
+.tw-skeleton-title { height: 16px; width: 85%; }
+.tw-skeleton-price { height: 22px; width: 50%; }
+.tw-skeleton-btn { height: 36px; width: 100%; margin-top: 4px; }
+
+@keyframes tw-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* 空狀態 */
+.tw-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  color: #999;
+}
+
+.tw-empty-state i {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 18px;
+  color: #ddd;
+}
+
+.tw-empty-state p {
+  font-size: 16px;
+  margin-bottom: 22px;
+  color: #666;
+}
+
+.tw-empty-state strong {
+  color: #1A8FA4;
+}
+
+.tw-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1A8FA4;
+  color: #fff;
+  padding: 10px 28px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .2s, transform .2s;
+}
+
+.tw-empty-btn:hover {
+  background: #157285;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* 分頁包裝 */
+.tw-pagination-wrap {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 </style>

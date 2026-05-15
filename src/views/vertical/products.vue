@@ -200,9 +200,28 @@
 
             <!-- 頂部工具列 -->
             <div class="tw-toolbar">
-              <div class="tw-toolbar-count">
-                <i class="ri-shopping-bag-3-line"></i>
-                共 <strong>{{ total }}</strong> 件商品
+              <div class="tw-toolbar-left">
+                <div class="tw-toolbar-count">
+                  <i class="ri-shopping-bag-3-line"></i>
+                  共 <strong>{{ total }}</strong> 件商品
+                </div>
+                <div class="tw-search-box">
+                  <i class="ri-search-line tw-search-icon"></i>
+                  <input
+                    type="text"
+                    v-model="searchInput"
+                    placeholder="搜尋商品名稱..."
+                    class="tw-search-input"
+                    @keyup.enter="onSearchKeyword"
+                  >
+                  <button
+                    v-if="searchInput"
+                    class="tw-search-clear"
+                    @click="clearKeyword"
+                  >
+                    <i class="ri-close-line"></i>
+                  </button>
+                </div>
               </div>
               <div class="tw-toolbar-sort">
                 <label>排序方式：</label>
@@ -221,8 +240,12 @@
             </div>
 
             <!-- 當前篩選狀態提示 -->
-            <div v-if="activeCategoryId || selectedBrands.length" class="tw-filter-chips">
+            <div v-if="activeCategoryId || selectedBrands.length || searchKeyword" class="tw-filter-chips">
               <span class="tw-chip-label">當前篩選：</span>
+              <span v-if="searchKeyword" class="tw-chip tw-chip-keyword">
+                關鍵字：{{ searchKeyword }}
+                <i class="ri-close-line" @click="clearKeyword"></i>
+              </span>
               <span v-if="activeCategoryId" class="tw-chip tw-chip-cat">
                 {{ currentCategoryName }}
                 <i class="ri-close-line" @click="onSelectCategory(null)"></i>
@@ -335,6 +358,8 @@ export default {
         pageSize: 12
       },
       sortKey: '',
+      searchKeyword: '',
+      searchInput: '',
       sortOptions: [
         { key: '',            label: '預設排序',     sortType: null, sortMode: null },
         { key: 'latest',      label: '最新上架',     sortType: 0,    sortMode: 1 },
@@ -365,11 +390,25 @@ export default {
     }
   },
   created() {
+    this.initFromQuery()
     this.loadCategories()
     this.loadTrendingProducts()
     this.loadProducts()
   },
+  watch: {
+    '$route.query.categoryId'(newVal) {
+      this.activeCategoryId = newVal ? String(newVal) : null
+      this.queryParams.pageNum = 1
+      this.loadProducts()
+    }
+  },
   methods: {
+    initFromQuery() {
+      const { categoryId } = this.$route.query
+      if (categoryId) {
+        this.activeCategoryId = String(categoryId)
+      }
+    },
     // ---- 分類 ----
     async loadCategories() {
       this.categoryLoading = true
@@ -380,12 +419,37 @@ export default {
         } else {
           this.categoryList = (res && res.data) || []
         }
+        this.$nextTick(() => {
+          this.expandToActiveCategory()
+        })
       } catch (e) {
         console.warn('載入分類失敗', e)
         this.categoryList = []
       } finally {
         this.categoryLoading = false
       }
+    },
+
+    expandToActiveCategory() {
+      if (!this.activeCategoryId) return
+      const targetId = String(this.activeCategoryId)
+      const walk = (nodes, parentStack = []) => {
+        if (!Array.isArray(nodes)) return false
+        for (const node of nodes) {
+          const nodeIdStr = String(node.id)
+          if (nodeIdStr === targetId) {
+            parentStack.forEach(pid => {
+              this.$set(this.expandedMap, String(pid), true)
+            })
+            return true
+          }
+          if (Array.isArray(node.children) && node.children.length) {
+            if (walk(node.children, [...parentStack, node.id])) return true
+          }
+        }
+        return false
+      }
+      walk(this.categoryList)
     },
 
     toggleExpand(nodeId) {
@@ -424,6 +488,9 @@ export default {
         if (this.selectedBrands.length) {
           params.brand = this.selectedBrands.join(',')
         }
+        if (this.searchKeyword) {
+          params.name = this.searchKeyword
+        }
         const sortOpt = this.sortOptions.find(o => o.key === this.sortKey)
         if (sortOpt && sortOpt.sortType !== null) {
           params.sortType = sortOpt.sortType
@@ -453,8 +520,21 @@ export default {
       this.activeCategoryId = null
       this.selectedBrands = []
       this.sortKey = ''
+      this.searchKeyword = ''
+      this.searchInput = ''
       this.queryParams.pageNum = 1
       this.loadProducts()
+    },
+
+    onSearchKeyword() {
+      this.searchKeyword = this.searchInput.trim()
+      this.doSearch()
+    },
+
+    clearKeyword() {
+      this.searchKeyword = ''
+      this.searchInput = ''
+      this.doSearch()
     },
 
     removeBrand(brand) {
@@ -810,6 +890,14 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.tw-toolbar-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+
 .tw-toolbar-count {
   display: flex;
   align-items: center;
@@ -857,6 +945,72 @@ export default {
 .tw-sort-select:hover,
 .tw-sort-select:focus {
   border-color: #1A8FA4;
+}
+
+/* 搜索框 */
+.tw-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tw-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #aaa;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.tw-search-input {
+  width: 220px;
+  padding: 7px 36px 7px 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #333;
+  background: #fafafa;
+  outline: none;
+  transition: border-color .2s, background .2s, box-shadow .2s;
+}
+
+.tw-search-input::placeholder {
+  color: #bbb;
+}
+
+.tw-search-input:hover {
+  border-color: #c0c0c0;
+  background: #fff;
+}
+
+.tw-search-input:focus {
+  border-color: #1A8FA4;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(26, 143, 164, 0.1);
+}
+
+.tw-search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 16px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: color .15s;
+}
+
+.tw-search-clear:hover {
+  color: #666;
+}
+
+@media (max-width: 575px) {
+  .tw-search-input {
+    width: 160px;
+  }
 }
 
 /* 篩選狀態提示欄 */
@@ -907,6 +1061,20 @@ export default {
   background: #fff4e6;
   color: #c97a1c;
 }
+
+.tw-chip-keyword {
+  background: #f0e8ff;
+  color: #7c3aed;
+}
+
+.tw-chip-keyword i {
+  cursor: pointer;
+  font-size: 14px;
+  opacity: .7;
+  transition: opacity .2s;
+}
+
+.tw-chip-keyword i:hover { opacity: 1; }
 
 .tw-chip-clear {
   font-size: 13px;

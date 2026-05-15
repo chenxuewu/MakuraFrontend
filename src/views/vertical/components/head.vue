@@ -67,9 +67,25 @@
               </div>
             </div>
             <div class="col-lg-5">
-              <form class="search-box">
-                <input type="text" name="Search" placeholder="搜尋商品、品牌或型號..." class="form-control">
-                <button type="submit" class="search-btn"><i class="ri-search-line"></i>搜尋</button>
+              <form class="search-box" @submit.prevent="onHeadSearch">
+                <input
+                  v-model="headSearchInput"
+                  type="text"
+                  name="Search"
+                  placeholder="搜尋商品、品牌或型號..."
+                  class="form-control"
+                >
+                <button
+                  v-if="headSearchInput"
+                  type="button"
+                  class="search-clear"
+                  @click="headSearchInput = ''"
+                >
+                  <i class="ri-close-line"></i>
+                </button>
+                <button type="submit" class="search-btn">
+                  <i class="ri-search-line"></i>搜尋
+                </button>
               </form>
             </div>
             <div class="col-lg-4">
@@ -328,6 +344,7 @@ export default {
     return {
       categoryVisible: false,  // 分類下拉顯示狀態
       categories: [],          // 後端動態分類列表
+      headSearchInput: ''     // 頂部搜尋框輸入
     }
   },
   created() {
@@ -355,7 +372,7 @@ export default {
         '/vertical/checkout', '/vertical/wishlist', '/vertical/my-account', '/vertical/success-order',
         '/vertical/order-tracking', '/vertical/dashboard', '/vertical/edit-profile',
         '/vertical/edit-address', '/vertical/order-history', '/vertical/order-details',
-        '/vertical/address', '/vertical/password'
+        '/vertical/address', '/vertical/password', '/vertical/search-page'
       ]
       const pageRoutes = [
         '/vertical/about', '/vertical/customer-comments', '/vertical/faq',
@@ -379,6 +396,15 @@ export default {
         }
       }).catch(() => {})
     },
+
+    onHeadSearch() {
+      const kw = this.headSearchInput.trim()
+      this.$router.push({
+        path: '/vertical/best-sellers',
+        query: kw ? { keyword: kw } : {}
+      })
+    },
+
     onCategoryEnter() {
       // 鼠標移入：始終顯示分類下拉
       this.categoryVisible = true
@@ -468,6 +494,37 @@ export default {
 @import '/test/static/css/animate.min.css';
 @import '/test/static/css/style.css';
 @import '/test/static/css/responsive.css';
+
+/* 搜尋框清除按鈕（放在非 scoped 區塊，避免 vue-loader 15 對 :deep() 解析的差異導致 position:absolute 失效，
+   按鈕落到第二行）。.search-btn 來自 style.css：position:absolute; right:2px; 寬約 90px，
+   清除按鈕需顯示在搜尋按鈕左側。 */
+.middle-header .search-box {
+  position: relative;
+}
+.middle-header .search-box .form-control {
+  padding-right: 140px;
+}
+.middle-header .search-box .search-clear {
+  position: absolute !important;
+  right: 102px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 18px;
+  padding: 4px 6px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .15s;
+  z-index: 3;
+}
+.middle-header .search-box .search-clear:hover {
+  color: #555;
+}
 </style>
 
 <style scoped>
@@ -513,4 +570,6 @@ export default {
   opacity: 0;
   transform: translateY(-6px);
 }
+
+/* 搜尋框清除按鈕樣式已移至非 scoped 區塊，避免作用域選擇器解析差異 */
 </style>
