@@ -359,6 +359,7 @@ import CustomPrompt from "../components/CustomPrompt.vue";
 
 import { cartList, addPurchase, reductionProduct, removeProduct, updateSku } from "@/api/cart/cart";
 import { getSkuInfoByProductId } from "@/api/product/product";
+import eventBus from '@/utils/eventBus';
 
 
 export default {
@@ -477,7 +478,9 @@ export default {
         });
         item.quantity = 1;
       }
-      reductionProduct(item.id, item.quantity);
+      reductionProduct(item.id, item.quantity).then(() => {
+        eventBus.$emit('cart-updated');
+      });
     },
 
     /** 移除商品確認框 */
@@ -525,6 +528,7 @@ export default {
           this.removeCartItemId = null;
           this.confirmCallback = null;
           this.getMyCartList();
+          eventBus.$emit('cart-updated');
         } else {
           this.removeCartItemId = null;
           this.confirmCallback = null;
@@ -619,6 +623,7 @@ export default {
               type: 'success'
             });
             this.getMyCartList();
+            eventBus.$emit('cart-updated');
           } else {
             this.$message({
               message: '修改失敗',

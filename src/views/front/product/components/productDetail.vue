@@ -232,6 +232,7 @@
 import { getProduct, behindGetProductById } from "@/api/product/product";
 import { collectProduct } from "@/api/product/productUserCollect";
 import { addPurchase } from "@/api/cart/cart";
+import eventBus from '@/utils/eventBus';
 
 export default {
     name: "ProductDetail",
@@ -402,7 +403,9 @@ export default {
             const formData = {};
             formData.productIds = this.product.id;
             formData.isCollect = this.isCollect;
-            collectProduct(formData);
+            collectProduct(formData).then(() => {
+              eventBus.$emit('wish-updated');
+            });
         },
 
         // 加入購物車
@@ -419,6 +422,7 @@ export default {
                         message: "加入購物車成功",
                         type: "wrong",
                     });
+                    eventBus.$emit('cart-updated');
                 } else {
                     this.$message({
                         message: response.message,

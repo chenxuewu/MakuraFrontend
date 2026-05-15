@@ -108,14 +108,14 @@
               <ul class="wish-cart">
                 <li>
                   <router-link to="/vertical/wishlist">
-                    <span class="wish-icon"><i class="ri-heart-line"></i><span class="count">0</span></span>
+                    <span class="wish-icon"><i class="ri-heart-line"></i><span class="count">{{ wishCount }}</span></span>
                     <span class="favorite">收藏</span>我的收藏
                   </router-link>
                 </li>
                 <li>
 <span class="cart" data-bs-toggle="modal" data-bs-target="#exampleModal-cart">
-<span class="wish-icon"><i class="ri-shopping-cart-line"></i><span class="count">0</span></span>
-<span class="favorite">購物車：</span>NT$0
+<span class="wish-icon"><i class="ri-shopping-cart-line"></i><span class="count">{{ cartCount }}</span></span>
+<span class="favorite">購物車：</span>NT${{ cartTotalPrice.toFixed(2) }}
 </span>
                 </li>
               </ul>
@@ -353,6 +353,9 @@
 import verticalMixin, { DEPENDENCIES, CAROUSEL_SELECTORS, OWL_CONFIGS } from '@/mixins/vertical'
 import { frontGetCategoryTree } from '@/api/product/category'
 import { mapState } from 'vuex'
+import { cartList } from '@/api/cart/cart'
+import { listCollect } from '@/api/product/collect'
+import eventBus from '@/utils/eventBus'
 
 export default {
   name: 'VerticalHead',
@@ -362,14 +365,26 @@ export default {
       categoryVisible: false,  // 分類下拉顯示狀態
       categories: [],          // 後端動態分類列表
       headSearchInput: '',     // 頂部搜尋框輸入
-      userDropdownVisible: false   // 會員下拉顯示狀態
+      userDropdownVisible: false,   // 會員下拉顯示狀態
+      cartCount: 0,            // 購物車商品數量
+      cartTotalPrice: 0,       // 購物車總金額
+      wishCount: 0             // 收藏商品數量
     }
   },
   created() {
     this.fetchCategories()
     if (this.token) {
       this.$store.dispatch('GetInfo')
+      this.fetchCartAndWishCounts()
     }
+  },
+  mounted() {
+    eventBus.$on('cart-updated', () => this.fetchCartAndWishCounts())
+    eventBus.$on('wish-updated', () => this.fetchCartAndWishCounts())
+  },
+  beforeDestroy() {
+    eventBus.$off('cart-updated')
+    eventBus.$off('wish-updated')
   },
   watch: {
     // 路由變化時重新判斷是否首頁
@@ -428,6 +443,25 @@ export default {
           this.categories = res.data
         }
       }).catch(() => {})
+    },
+
+    fetchCartAndWishCounts() {
+      const requestCart = cartList(null, null).then(res => {
+        if (res.code === 200 && Array.isArray(res.rows)) {
+          this.cartCount = res.rows.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
+          this.cartTotalPrice = res.rows.reduce((sum, item) => {
+            return sum + (Number(item.price) || 0) * (Number(item.quantity) || 0)
+          }, 0)
+        }
+      }).catch(() => {})
+
+      const requestWish = listCollect({ pageNum: 1, pageSize: 1 }).then(res => {
+        if (res.code === 200) {
+          this.wishCount = Number(res.total) || 0
+        }
+      }).catch(() => {})
+
+      Promise.all([requestCart, requestWish])
     },
 
     onHeadSearch() {

@@ -138,6 +138,7 @@
 import Header from '@v/front/components/header.vue';
 import { getProductUserCollectList, collectProduct } from "@/api/product/productUserCollect";
 import CustomPrompt from "../components/CustomPrompt.vue";
+import eventBus from '@/utils/eventBus';
 
 export default {
   components: {
@@ -330,6 +331,7 @@ export default {
             type: "warning",
           });
           this.getCollectList();
+          eventBus.$emit('wish-updated');
         });
       } else if (this.confirmCallback == 2) {
         //定義一個字元串儲存選中的商品id,隔開,最後一個逗號去掉
@@ -347,6 +349,7 @@ export default {
             type: "warning",
           });
           this.getCollectList();
+          eventBus.$emit('wish-updated');
         });
       }
       this.confirmCallback = null;

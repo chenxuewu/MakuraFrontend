@@ -314,6 +314,7 @@ import CustomPrompt from "../components/CustomPrompt.vue";
 import { listAddress } from "@/api/system/address.js";
 import { cartList } from "@/api/cart/cart";
 import { addOrder, immediatelyOrder } from "@/api/order/order";
+import eventBus from '@/utils/eventBus';
 
 
 
@@ -513,6 +514,7 @@ export default {
             type: 'success',
             message: '下單成功',
           });
+          eventBus.$emit('cart-updated');
           // 跳轉到訂單列表
           this.$router.push({ path: '/order' });
         } else {

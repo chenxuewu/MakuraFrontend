@@ -80,6 +80,7 @@
 import { collectProduct } from '@/api/product/productUserCollect'
 import { getToken } from '@/utils/auth'
 import { Message } from 'element-ui'
+import eventBus from '@/utils/eventBus'
 
 export default {
   name: 'ProductCard',
@@ -141,6 +142,7 @@ export default {
           } else {
             Message.success('已取消收藏')
           }
+          eventBus.$emit('wish-updated')
           this.$emit('collect-change', { productId: this.product.id, collected: isCollect })
         })
         .catch(() => {})
