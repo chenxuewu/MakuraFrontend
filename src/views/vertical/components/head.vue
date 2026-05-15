@@ -625,7 +625,7 @@ export default {
   border-radius: 50%;
 }
 .header-user-name {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: #1a1a2e;
   white-space: nowrap;
