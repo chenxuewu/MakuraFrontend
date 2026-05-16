@@ -109,14 +109,23 @@
                   <div v-if="!categoryList.length && !categoryLoading" class="tw-empty-hint">
                     暫無分類
                   </div>
-                  <CategoryTree
-                    v-else
-                    :nodes="categoryList"
-                    :active-id="activeCategoryId"
-                    :expanded-map="expandedMap"
-                    @select="onSelectCategory"
-                    @toggle="toggleExpand"
-                  />
+                  <div v-else>
+                    <div
+                      class="tw-all-category"
+                      :class="{ 'is-active': !activeCategoryId }"
+                      @click="onSelectCategory(null)"
+                    >
+                      <i class="ri-grid-fill"></i>
+                      <span>全部分類</span>
+                    </div>
+                    <CategoryTree
+                      :nodes="categoryList"
+                      :active-id="activeCategoryId"
+                      :expanded-map="expandedMap"
+                      @select="onSelectCategory"
+                      @toggle="toggleExpand"
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -186,7 +195,7 @@
             <div class="tw-promo-banner">
               <div class="tw-promo-text">
                 <span class="tw-promo-tag">限時優惠</span>
-                <h3>各種優質工具 全面 <em>7 折</em></h3>
+                <h3>各種優質工具 全面 <em>9折</em></h3>
                 <p>嚴選工地機械工具，品質保證</p>
                 <a href="javascript:;" class="tw-promo-btn">
                   <i class="ri-shopping-cart-line"></i>
@@ -683,6 +692,35 @@ export default {
   text-align: center;
 }
 
+/* 全部分類 */
+.tw-all-category {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+  transition: background .15s, color .15s;
+  margin-bottom: 6px;
+}
+
+.tw-all-category:hover {
+  background: #f4fafb;
+  color: #1A8FA4;
+}
+
+.tw-all-category.is-active {
+  background: #e8f5f7;
+  color: #1A8FA4;
+  font-weight: 600;
+}
+
+.tw-all-category i {
+  font-size: 16px;
+}
+
 /* 品牌 */
 .tw-brand-item {
   display: flex;
@@ -847,7 +885,8 @@ export default {
 .tw-promo-text p {
   margin: 0 0 16px;
   font-size: 14px;
-  opacity: .9;
+  color: #fff;
+  opacity: .95;
 }
 
 .tw-promo-btn {

@@ -12,7 +12,7 @@
                 <div class="hero-slider-content">
                   <span>限時優惠</span>
                   <h1>手工具超值組合就在這裡</h1>
-                  <p>全館免運，商品再打 4 折</p>
+                  <p>全館免運，新客再享專屬優惠</p>
                   <div class="hero-slider-btn">
                     <router-link to="/vertical/products" class="default-btn">
                       <i class="ri-shopping-cart-line"></i>
@@ -30,12 +30,12 @@
               <div class="container">
                 <div class="hero-slider-content">
                   <span>Special Offer</span>
-                  <h1>2021 年最佳家居裝飾精選</h1>
-                  <p>全館免運，商品再打 4 折</p>
+                  <h1>2026 年最佳家居裝飾精選</h1>
+                  <p>全館免運，會員專屬折扣等你來</p>
                   <div class="banner-btn">
                     <router-link to="/vertical/products" class="default-btn">
                       <i class="ri-shopping-cart-line"></i>
-                      Shop Now
+                      立即選購
                     </router-link>
                   </div>
                 </div>
@@ -50,11 +50,11 @@
                 <div class="hero-slider-content">
                   <span>Special Offer</span>
                   <h1>各種頂級品質工具</h1>
-                  <p>全館免運，商品再打 4 折</p>
+                  <p>全館免運，滿額再折優惠券</p>
                   <div class="banner-btn">
                     <router-link to="/vertical/products" class="default-btn">
                       <i class="ri-shopping-cart-line"></i>
-                      Shop Now
+                      立即選購
                     </router-link>
                   </div>
                 </div>

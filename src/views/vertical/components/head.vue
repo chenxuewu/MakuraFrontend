@@ -134,6 +134,9 @@
                 ><i class="ri-menu-line"></i></button>
                 <div class="navbar-category-dropdown dropdown-menu" aria-labelledby="categoryButton-1">
                   <ul>
+                    <li>
+                      <router-link to="/vertical/products">全部分類</router-link>
+                    </li>
                     <li v-for="cat in categories" :key="cat.id">
                       <router-link :to="{ path: '/vertical/products', query: { categoryId: cat.id } }">{{ cat.displayName }}</router-link>
                     </li>
@@ -157,6 +160,9 @@
                 <transition name="cat-drop">
                   <div v-show="categoryVisible" class="navbar-category-dropdown">
                     <ul>
+                      <li>
+                        <router-link to="/vertical/products">全部分類</router-link>
+                      </li>
                       <li v-for="cat in categories" :key="cat.id">
                         <router-link :to="{ path: '/vertical/products', query: { categoryId: cat.id } }">{{ cat.displayName }}</router-link>
                       </li>

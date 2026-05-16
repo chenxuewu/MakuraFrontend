@@ -39,7 +39,7 @@
           <!-- 左：圖片畫廊 -->
           <div class="col-lg-5 col-md-6">
             <div class="pd-gallery">
-              <div class="pd-main-img-wrap">
+              <div class="pd-main-img-wrap" @click="openImagePreview">
                 <!-- 有視頻資料 → 視頻播放器；否則 → 圖片 -->
                 <video
                   v-if="videoFile && isActiveVideo"
@@ -51,6 +51,7 @@
                 ></video>
                 <img v-else :src="activeImg" :alt="product.name" class="pd-main-img" />
                 <span v-if="product.sale >= 100" class="pd-badge-hot">熱銷</span>
+                <div class="pd-zoom-hint"><i class="ri-zoom-in-line"></i> 點擊放大</div>
               </div>
               <!-- 縮圖條：有視頻資料則視頻排第一，後接圖片 -->
               <div v-if="allMediaItems.length > 1" class="pd-thumbs-row">
@@ -126,7 +127,7 @@
                     }"
                     @click="selectSku(sku)"
                   >
-                    <img v-if="sku.picUrl" :src="sku.picUrl" class="pd-sku-thumb" :alt="sku.name" />
+                    <img v-if="sku.picUrl" :src="sku.picUrl" class="pd-sku-thumb" :alt="sku.name" @click.stop="openSkuImagePreview(sku)" />
                     <span>{{ sku.name }}</span>
                     <span v-if="sku.xtProductSkuPriceVo.stock <= 0" class="pd-sku-out">缺貨</span>
                   </button>
@@ -271,6 +272,33 @@
     <VerticalSubscribe />
     <VerticalFoot />
 
+    <!-- 圖片預覽 -->
+    <teleport to="body">
+      <transition name="tw-img-preview-fade">
+        <div v-if="imagePreviewVisible" class="tw-img-preview-overlay" @click="closeImagePreview">
+          <div class="tw-img-preview-content" @click.stop>
+            <button class="tw-img-preview-close" @click="closeImagePreview">
+              <i class="ri-close-fill"></i>
+            </button>
+            <button class="tw-img-preview-nav prev" @click.stop="previewPrev" v-if="previewImages.length > 1">
+              <i class="ri-arrow-left-s-line"></i>
+            </button>
+            <button class="tw-img-preview-nav next" @click.stop="previewNext" v-if="previewImages.length > 1">
+              <i class="ri-arrow-right-s-line"></i>
+            </button>
+            <img :src="previewCurrentImg" :alt="product ? product.name : '商品圖片'" class="tw-img-preview-img" />
+            <div class="tw-img-preview-dots" v-if="previewImages.length > 1">
+              <span
+                v-for="(img, idx) in previewImages"
+                :key="idx"
+                :class="{ active: idx === previewIndex }"
+                @click.stop="previewIndex = idx"
+              ></span>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </teleport>
   </div>
 </template>
 
@@ -312,7 +340,10 @@ export default {
       tabs: ['商品描述', '評價'],
       relatedProducts: [],
       collected: false,
-      collectLoading: false
+      collectLoading: false,
+      // 圖片預覽
+      imagePreviewVisible: false,
+      previewIndex: 0
     }
   },
   computed: {
@@ -381,6 +412,21 @@ export default {
     categoryFirst() {
       if (!this.product || !this.product.categoryPath) return ''
       return this.product.categoryPath.split('/')[0] || ''
+    },
+    // 圖片預覽用的圖片列表（包含 SKU 圖片）
+    previewImages() {
+      const images = [...this.allMediaItems.filter(item => Number(item.fileType) === 0)]
+      this.skuList.forEach(sku => {
+        if (sku.picUrl && !images.find(img => img.fileUrl === sku.picUrl)) {
+          images.push({ id: 'sku-' + sku.id, fileUrl: sku.picUrl })
+        }
+      })
+      return images
+    },
+    previewCurrentImg() {
+      const images = this.previewImages
+      if (images.length === 0) return ''
+      return images[this.previewIndex] ? images[this.previewIndex].fileUrl : ''
     }
   },
   watch: {
@@ -449,6 +495,37 @@ export default {
       if (sku.picUrl) {
         const idx = this.allMediaItems.findIndex(item => item.fileUrl === sku.picUrl)
         if (idx >= 0) this.activeImgIdx = idx
+      }
+    },
+    openImagePreview() {
+      this.previewIndex = this.activeImgIdx
+      this.imagePreviewVisible = true
+      document.body.style.overflow = 'hidden'
+    },
+    openSkuImagePreview(sku) {
+      if (!sku.picUrl) return
+      const images = this.previewImages
+      const idx = images.findIndex(item => item.fileUrl === sku.picUrl)
+      this.previewIndex = idx >= 0 ? idx : 0
+      this.imagePreviewVisible = true
+      document.body.style.overflow = 'hidden'
+    },
+    closeImagePreview() {
+      this.imagePreviewVisible = false
+      document.body.style.overflow = ''
+    },
+    previewPrev() {
+      if (this.previewIndex > 0) {
+        this.previewIndex--
+      } else {
+        this.previewIndex = this.allMediaItems.length - 1
+      }
+    },
+    previewNext() {
+      if (this.previewIndex < this.allMediaItems.length - 1) {
+        this.previewIndex++
+      } else {
+        this.previewIndex = 0
       }
     },
     starClass(n) {
@@ -808,6 +885,11 @@ export default {
   border-radius: 4px;
   object-fit: cover;
   border: 1px solid #eee;
+  cursor: zoom-in;
+}
+.pd-sku-thumb:hover {
+  border-color: #1A8FA4;
+  box-shadow: 0 2px 8px rgba(26, 143, 164, 0.3);
 }
 .pd-sku-out {
   font-size: 10px;
@@ -1104,5 +1186,116 @@ export default {
   .pd-btn-cart, .pd-btn-buy { flex: unset; width: 100%; }
   .pd-rating-overview { flex-direction: column; gap: 24px; }
   .pd-tab-pane { padding: 20px; }
+}
+
+/* ===== 圖片放大提示 ===== */
+.pd-zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.pd-main-img-wrap:hover .pd-zoom-hint {
+  opacity: 1;
+}
+
+/* ===== 圖片預覽 ===== */
+.tw-img-preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tw-img-preview-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+.tw-img-preview-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.tw-img-preview-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tw-img-preview-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.tw-img-preview-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tw-img-preview-nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.tw-img-preview-nav.prev { left: -60px; }
+.tw-img-preview-nav.next { right: -60px; }
+.tw-img-preview-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.tw-img-preview-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+.tw-img-preview-dots span.active {
+  background: #fff;
+}
+.tw-img-preview-fade-enter-active,
+.tw-img-preview-fade-leave-active {
+  transition: opacity 0.25s ease;
+}
+.tw-img-preview-fade-enter,
+.tw-img-preview-fade-leave-to {
+  opacity: 0;
+}
+@media (max-width: 767px) {
+  .tw-img-preview-nav { display: none; }
+  .tw-img-preview-img { max-width: 95vw; max-height: 70vh; }
 }
 </style>
