@@ -311,7 +311,7 @@
 import verticalMixin, { DEPENDENCIES, CAROUSEL_SELECTORS, OWL_CONFIGS } from '@/mixins/vertical'
 import { frontGetCategoryTree } from '@/api/product/category'
 import { mapState } from 'vuex'
-import { cartList } from '@/api/cart/cart'
+import { cartListOne } from '@/api/cart/cart'
 import { listCollect } from '@/api/product/collect'
 import eventBus from '@/utils/eventBus'
 import AddToCartModal from './AddToCartModal.vue'
@@ -407,12 +407,24 @@ export default {
     },
 
     fetchCartAndWishCounts() {
-      const requestCart = cartList(null, null).then(res => {
+      const requestCart = cartListOne(null, null).then(res => {
         if (res.code === 200 && Array.isArray(res.rows)) {
-          this.cartCount = res.rows.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
-          this.cartTotalPrice = res.rows.reduce((sum, item) => {
-            return sum + (Number(item.price) || 0) * (Number(item.quantity) || 0)
-          }, 0)
+          let totalCount = 0
+          let totalPrice = 0
+          res.rows.forEach(userCart => {
+            ;(userCart.xtCartShopVoList || []).forEach(shop => {
+              ;(shop.cartItemVoList || []).forEach(item => {
+                const qty = Number(item.quantity) || 0
+                totalCount += qty
+                const unitPrice = item.price && item.price.parsedValue != null
+                  ? item.price.parsedValue
+                  : Number(item.price) || 0
+                totalPrice += unitPrice * qty
+              })
+            })
+          })
+          this.cartCount = totalCount
+          this.cartTotalPrice = totalPrice
         }
       }).catch(() => {})
 

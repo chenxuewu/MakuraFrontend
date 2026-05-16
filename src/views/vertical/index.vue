@@ -553,7 +553,12 @@ export default {
     this.loadCategories()
   },
   mounted() {
-    this.initStaticCarousels()
+    // 等待脚本加载完成后初始化
+    this.initCarouselsAfterScripts()
+  },
+  activated() {
+    // SPA 切回首页时，重新初始化所有轮播
+    this.initCarouselsAfterScripts()
   },
   methods: {
     async loadHomeSections() {
@@ -645,7 +650,6 @@ export default {
           if ($el.data('owl.carousel')) {
             $el.trigger('destroy.owl.carousel').removeClass('owl-loaded')
           }
-          // 重新 init 前確保 class 還在（destroy 不會移除 owl-carousel 本身）
           if (!$el.hasClass('owl-carousel')) $el.addClass('owl-carousel')
           $el.owlCarousel(cfg)
         } catch (e) {
@@ -659,13 +663,15 @@ export default {
         return
       }
       const $ = jQuery
-      // 只初始化 index.vue 中存在的靜態輪播
-      const staticSelectores = {
+      // 初始化 index.vue 中存在的所有静态轮播（包括 Hero 轮播）
+      // 注意：mixin 中 OWL_CONFIGS 使用组合选择器，所以这里也用组合选择器
+      const staticSelectors = {
+        '.hero-slider-two': { items: 1, loop: true, nav: false, dots: true, autoplay: true, smartSpeed: 1000, autoplayHoverPause: true },
         '.partner-slider': OWL_CONFIGS['.partner-slider'],
         '.customer-slider': OWL_CONFIGS['.customer-slider'],
         // .flash-deals-slider 由 refreshDynamicCarousels 在商品載入後統一處理，避免 DOM 空時就被初始化
       }
-      Object.entries(staticSelectores).forEach(([sel, cfg]) => {
+      Object.entries(staticSelectors).forEach(([sel, cfg]) => {
         const $el = $(sel)
         if (!$el.length) return
         try {
@@ -677,6 +683,18 @@ export default {
         } catch (e) {
           console.warn('靜態輪播初始化失敗', sel, e)
         }
+      })
+    },
+    initCarouselsAfterScripts(retry = 0) {
+      if (typeof jQuery === 'undefined' || !jQuery.fn.owlCarousel) {
+        if (retry < 100) setTimeout(() => this.initCarouselsAfterScripts(retry + 1), 100)
+        return
+      }
+      this.$nextTick(() => {
+        requestAnimationFrame(() => {
+          this.initStaticCarousels()
+          this.refreshDynamicCarousels()
+        })
       })
     }
   }

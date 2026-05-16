@@ -134,8 +134,8 @@
                   {{ item.skuName }}
                 </div>
                 <div class="tw-card-meta">
-                  <span class="tw-card-price">NT$ {{ formatPrice(item.price) }}</span>
-                  <span v-if="item.originalPrice && item.originalPrice > item.price" class="tw-card-original">
+                  <span class="tw-card-price">NT$ {{ formatPrice(getUnitPrice(item)) }}</span>
+                  <span v-if="item.originalPrice && getUnitPrice(item) > 0 && item.originalPrice > getUnitPrice(item)" class="tw-card-original">
                     NT$ {{ formatPrice(item.originalPrice) }}
                   </span>
                 </div>
@@ -350,13 +350,28 @@ export default {
     fetchCartList() {
       this.loading = true
       cartList(null, null).then(response => {
-        this.cartItems = response.rows || []
+        const rows = response.rows || []
+        // 將三層嵌套結構扁平化：rows → xtCartShopVoList → cartItemVoList
+        const flat = []
+        rows.forEach(userCart => {
+          ;(userCart.xtCartShopVoList || []).forEach(shop => {
+            ;(shop.cartItemVoList || []).forEach(item => {
+              flat.push({ ...item, _shopName: shop.shopName })
+            })
+          })
+        })
+        this.cartItems = flat
         this.checkedIds = new Set()
         this.loading = false
       }).catch(() => {
         this.cartItems = []
         this.loading = false
       })
+    },
+
+    getUnitPrice(item) {
+      if (item.price && item.price.parsedValue != null) return item.price.parsedValue
+      return Number(item.price) || 0
     },
 
     isInvalid(item) {
@@ -369,7 +384,7 @@ export default {
     },
 
     itemSubtotal(item) {
-      return (Number(item.price) || 0) * (Number(item.quantity) || 0)
+      return this.getUnitPrice(item) * (Number(item.quantity) || 0)
     },
 
     formatPrice(price) {
@@ -436,7 +451,8 @@ export default {
       const originalQty = item.quantity
       item.quantity = quantity
       reductionProduct(item.id, quantity).then(() => {
-        eventBus.$emit('cart-updated')
+        // 不要在這裡 emit cart-updated，避免 header 拿到樂觀值。
+        // 等伺服器真正回應再 fetch，或由伺服器回傳最新庫存後再更新。
       }).catch(() => {
         item.quantity = originalQty
         this.$message({ message: '數量更新失敗，請稍後再試', type: 'error' })

@@ -20,7 +20,7 @@ export function cartListOne(searchParam, cartItemIds) {
     method: 'get',
     params: {
       pageNum: 1,
-      pageSize: 1,
+      pageSize: 10000,
       searchParam: searchParam,
       cartItemIds: cartItemIds
     }

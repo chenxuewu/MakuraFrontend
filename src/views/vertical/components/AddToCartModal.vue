@@ -159,9 +159,11 @@ export default {
       skuList: [],        // 完整 SKU 陣列（與詳情頁一致）
       skuAttributes: [],  // 解析後的屬性結構
       selectedSkuId: null,
+      // 原始規格定義（用於映射 propSortNum → propValueName）
+      specifications: [],  // 來自 xtProductVo.specifications，JSON 解析後的陣列
 
       // 單選屬性值
-      selectedAttrValues: [],  // selectedAttrValues[attrIdx] = 選中的值字串
+      selectedAttrValues: [],  // selectedAttrValues[attrIdx] = 選中的 propValueName 字串
 
       quantity: 1,
       displayStock: 0,
@@ -180,12 +182,21 @@ export default {
       return this.skuAttributes.every((attr, i) => this.selectedAttrValues[i] !== undefined)
     },
     // 根據當前選中的屬性，計算哪個 SKU id
+    // selectedAttrValues 存的是 propValueName，需要轉成 propSortNum 再匹配 tierIndex
     resolvedSkuId() {
       if (!this.skuList.length || !this.allAttrsSelected) return null
+      // 將選中的 propValueName 轉換為 propSortNum 位置索引
+      const sortNums = this.selectedAttrValues.map((val, attrIdx) => {
+        const spec = this.specifications[attrIdx]
+        if (!spec) return null
+        const found = spec.values.find(v => v.propValueName === val)
+        return found ? String(found.propSortNum) : null
+      })
+      if (sortNums.some(n => n === null)) return null
       const found = this.skuList.find(sku => {
         const attrs = sku.tierIndex ? sku.tierIndex.split(',') : []
-        return attrs.length === this.selectedAttrValues.length &&
-          attrs.every((v, i) => v === this.selectedAttrValues[i])
+        return attrs.length === sortNums.length &&
+          attrs.every((v, i) => v === sortNums[i])
       })
       return found ? found.id : null
     }
@@ -238,6 +249,7 @@ export default {
       this.product = null
       this.skuList = []
       this.skuAttributes = []
+      this.specifications = []
       this.selectedAttrValues = []
       this.selectedSkuId = null
       this.quantity = 1
@@ -260,6 +272,17 @@ export default {
           this.displayOriginalPrice = Number(this.product.originalPrice) || 0
           this.displayStock = Number(this.product.stock) || 0
 
+          // 解析商品規格定義（JSON 字串 → 陣列），用於映射 propSortNum → propValueName
+          if (this.product.specifications) {
+            try {
+              this.specifications = JSON.parse(this.product.specifications)
+            } catch (e) {
+              this.specifications = []
+            }
+          } else {
+            this.specifications = []
+          }
+
           const skus = data.xtProductSkuVos || []
           this.skuList = skus
           if (skus.length > 0) {
@@ -272,17 +295,25 @@ export default {
     },
 
     buildSkuAttributes(skus) {
-      // 從第一個 SKU 的 tierIndex 解析屬性名稱
+      // 從 specifications 解析屬性名稱（規格1、規格2 或 propName）
       if (!skus.length || !skus[0].tierIndex) return
-      const firstAttrs = skus[0].tierIndex.split(',')
-      this.skuAttributes = firstAttrs.map((_, attrIdx) => {
+      if (!this.specifications || !this.specifications.length) return
+
+      this.skuAttributes = this.specifications.map((spec, attrIdx) => {
         const valuesSet = new Set()
         skus.forEach(sku => {
           const vals = sku.tierIndex ? sku.tierIndex.split(',') : []
-          if (vals[attrIdx]) valuesSet.add(vals[attrIdx])
+          const sortNum = vals[attrIdx]
+          if (sortNum) {
+            // 根據 propSortNum 找到對應的 propValueName
+            const specVal = spec.values.find(v => String(v.propSortNum) === sortNum)
+            if (specVal && specVal.propValueName) {
+              valuesSet.add(specVal.propValueName)
+            }
+          }
         })
         return {
-          name: `規格${attrIdx + 1}`,
+          name: spec.propName || `規格${attrIdx + 1}`,
           values: [...valuesSet].map(v => ({ value: v, disabled: false }))
         }
       })
@@ -290,7 +321,7 @@ export default {
     },
 
     autoSelectFirst() {
-      // 如果只有一個 SKU 且只有一個屬性值，直接選中
+      // 如果只有一個屬性行且只有一個值，直接選中
       if (this.skuAttributes.length === 1 && this.skuAttributes[0].values.length === 1) {
         this.selectAttr(0, this.skuAttributes[0].values[0].value)
       }
@@ -304,16 +335,29 @@ export default {
 
     updateDisabledStates() {
       // 遍歷每個屬性格式，標記不可選的組合
+      // selectedAttrValues 存的是 propValueName，需轉為 propSortNum 再匹配
       this.skuAttributes.forEach((attr, attrIdx) => {
         attr.values.forEach(v => {
           const testSelection = [...this.selectedAttrValues]
           testSelection[attrIdx] = v.value
+          // 將 propValueName 轉為 propSortNum
+          const testSortNums = testSelection.map((val, i) => {
+            if (!val) return null
+            const spec = this.specifications[i]
+            if (!spec) return null
+            const found = spec.values.find(sv => sv.propValueName === val)
+            return found ? String(found.propSortNum) : null
+          })
+          if (testSortNums.some(n => n === null)) {
+            v.disabled = true
+            return
+          }
           const isValid = this.skuList.some(sku => {
             const skuAttrs = sku.tierIndex ? sku.tierIndex.split(',') : []
-            return skuAttrs.length === testSelection.length &&
+            return skuAttrs.length === testSortNums.length &&
               skuAttrs.every((val, i) => {
-                if (i === attrIdx) return v.value === val
-                return !testSelection[i] || testSelection[i] === val
+                if (i === attrIdx) return v.value !== undefined && testSortNums[i] === val
+                return testSortNums[i] === val
               }) &&
               Number(sku.xtProductSkuPriceVo.stock) > 0
           })
